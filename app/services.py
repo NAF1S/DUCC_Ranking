@@ -4,11 +4,17 @@ import asyncio
 import re
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
+from .retry import async_retry
+from .logger import setup_logger
 
 load_dotenv()
 
+# Set up logger
+logger = setup_logger('services')
+
 class ChessService:
     @staticmethod
+    @async_retry(retries=3, delay=1, backoff=2, logger=logger)
     async def get_chesscom_rating(username: str) -> float:
         """Fetch Chess.com rating for a player"""
         try:
@@ -26,16 +32,17 @@ class ChessService:
                         ]
                         return max(ratings) if max(ratings) > 0 else None
                     elif response.status == 404:
-                        print(f"Player {username} not found on Chess.com")
+                        logger.warning(f"Player {username} not found on Chess.com")
                         return None
                     else:
-                        print(f"Error fetching Chess.com rating: HTTP {response.status}")
-                        return None
+                        logger.error(f"Error fetching Chess.com rating: HTTP {response.status}")
+                        raise Exception(f"HTTP {response.status}")
         except Exception as e:
-            print(f"Error fetching Chess.com rating: {e}")
-            return None
+            logger.error(f"Error fetching Chess.com rating: {e}")
+            raise
 
     @staticmethod
+    @async_retry(retries=3, delay=1, backoff=2, logger=logger)
     async def get_lichess_rating(username: str) -> float:
         """Fetch Lichess rating for a player"""
         try:
@@ -53,16 +60,17 @@ class ChessService:
                         ]
                         return max(ratings) if max(ratings) > 0 else None
                     elif response.status == 404:
-                        print(f"Player {username} not found on Lichess")
+                        logger.warning(f"Player {username} not found on Lichess")
                         return None
                     else:
-                        print(f"Error fetching Lichess rating: HTTP {response.status}")
-                        return None
+                        logger.error(f"Error fetching Lichess rating: HTTP {response.status}")
+                        raise Exception(f"HTTP {response.status}")
         except Exception as e:
-            print(f"Error fetching Lichess rating: {e}")
-            return None 
-        
+            logger.error(f"Error fetching Lichess rating: {e}")
+            raise
+
     @staticmethod
+    @async_retry(retries=3, delay=1, backoff=2, logger=logger)
     async def get_fide_rating(fide_id: int, timeout: int = 10) -> dict:
         """
         Scrape FIDE ratings for Standard, Rapid, and Blitz for a given player ID
@@ -86,14 +94,14 @@ class ChessService:
         }
         
         try:
-            print(f"Fetching data from: {url}")
+            logger.info(f"Fetching data from: {url}")
             
             # Use aiohttp for async consistency with other methods
             async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=timeout)) as session:
                 async with session.get(url, headers=headers) as response:
                     if response.status != 200:
-                        print(f"HTTP Error: {response.status}")
-                        return None
+                        logger.error(f"HTTP Error: {response.status}")
+                        raise Exception(f"HTTP {response.status}")
                     
                     html_content = await response.text()
             
@@ -117,25 +125,25 @@ class ChessService:
             # Find the directory section
             directory_section = soup.find('section', class_='directory')
             if not directory_section:
-                print("Could not find directory section")
+                logger.warning("Could not find directory section")
                 return None
             
             # Find profile-section within directory
             profile_section = directory_section.find('div', class_='profile-section')
             if not profile_section:
-                print("Could not find profile-section")
+                logger.warning("Could not find profile-section")
                 return None
             
             # Find profile-games within profile-section
             profile_games = profile_section.find('div', class_='profile-games')
             if not profile_games:
-                print("Could not find profile-games")
+                logger.warning("Could not find profile-games")
                 return None
             
             # Find all game type divs (should be 3: standard, rapid, blitz)
             game_divs = profile_games.find_all('div', recursive=False)
             
-            print(f"Found {len(game_divs)} game type sections")
+            logger.info(f"Found {len(game_divs)} game type sections")
             
             # Process each game type div
             for i, game_div in enumerate(game_divs):
@@ -143,7 +151,7 @@ class ChessService:
                 first_p = game_div.find('p')
                 if first_p:
                     rating_text = first_p.text.strip()
-                    print(f"Game type {i + 1} rating text: '{rating_text}'")
+                    logger.info(f"Game type {i + 1} rating text: '{rating_text}'")
                     
                     # Extract numeric rating from the text
                     rating_match = re.search(r'\b(\d{3,4})\b', rating_text)
@@ -158,28 +166,28 @@ class ChessService:
                         elif i == 2:  # Third div is typically Blitz
                             player_data['blitz_rating'] = rating
                         
-                        print(f"Extracted rating: {rating}")
+                        logger.info(f"Extracted rating: {rating}")
                     else:
-                        print(f"No numeric rating found in: {rating_text}")
+                        logger.warning(f"No numeric rating found in: {rating_text}")
                 else:
-                    print(f"No <p> tag found in game div {i + 1}")
+                    logger.warning(f"No <p> tag found in game div {i + 1}")
             
             # Try to extract country information
             try:
                 country_element = soup.find('img', {'alt': re.compile(r'.*flag.*', re.I)})
                 if country_element and country_element.get('title'):
                     player_data['country'] = country_element['title']
-            except:
-                pass
+            except Exception as e:
+                logger.warning(f"Error extracting country info: {e}")
             
             return player_data
             
         except asyncio.TimeoutError:
-            print(f"Request timeout for FIDE ID: {fide_id}")
-            return None
+            logger.error(f"Request timeout for FIDE ID: {fide_id}")
+            raise
         except Exception as e:
-            print(f"Error fetching FIDE rating: {e}")
-            return None
+            logger.error(f"Error fetching FIDE rating: {e}")
+            raise
 
     @staticmethod
     async def get_fide_highest_rating(fide_id: int) -> int:
@@ -192,18 +200,22 @@ class ChessService:
         Returns:
             int: Highest rating, or None if failed
         """
-        player_data = await ChessService.get_fide_rating(fide_id)
-        if not player_data:
+        try:
+            player_data = await ChessService.get_fide_rating(fide_id)
+            if not player_data:
+                return None
+            
+            ratings = [
+                player_data.get('standard_rating', 0) or 0,
+                player_data.get('rapid_rating', 0) or 0,
+                player_data.get('blitz_rating', 0) or 0
+            ]
+            
+            max_rating = max(ratings)
+            return max_rating if max_rating > 0 else None
+        except Exception as e:
+            logger.error(f"Error getting highest FIDE rating: {e}")
             return None
-        
-        ratings = [
-            player_data.get('standard_rating', 0) or 0,
-            player_data.get('rapid_rating', 0) or 0,
-            player_data.get('blitz_rating', 0) or 0
-        ]
-        
-        max_rating = max(ratings)
-        return max_rating if max_rating > 0 else None
 
     @staticmethod
     async def get_all_ratings(chess_com_username: str = None, 
@@ -264,30 +276,30 @@ async def test_chess_service():
     """Test function to demonstrate usage"""
     
     # Test individual services
-    print("Testing Chess.com...")
+    logger.info("Testing Chess.com...")
     chess_com_rating = await ChessService.get_chesscom_rating("hikaru")
-    print(f"Chess.com rating: {chess_com_rating}")
+    logger.info(f"Chess.com rating: {chess_com_rating}")
     
-    print("\nTesting Lichess...")
+    logger.info("\nTesting Lichess...")
     lichess_rating = await ChessService.get_lichess_rating("DrNykterstein")
-    print(f"Lichess rating: {lichess_rating}")
+    logger.info(f"Lichess rating: {lichess_rating}")
     
-    print("\nTesting FIDE...")
+    logger.info("\nTesting FIDE...")
     fide_data = await ChessService.get_fide_rating(10297677)
-    print(f"FIDE data: {fide_data}")
+    logger.info(f"FIDE data: {fide_data}")
     
     # Test getting highest FIDE rating
     fide_highest = await ChessService.get_fide_highest_rating(10297677)
-    print(f"FIDE highest rating: {fide_highest}")
+    logger.info(f"FIDE highest rating: {fide_highest}")
     
     # Test getting all ratings for a player
-    print("\nTesting all ratings...")
+    logger.info("\nTesting all ratings...")
     all_ratings = await ChessService.get_all_ratings(
         chess_com_username="hikaru",
         lichess_username="DrNykterstein", 
         fide_id=10297677
     )
-    print(f"All ratings: {all_ratings}")
+    logger.info(f"All ratings: {all_ratings}")
 
 if __name__ == "__main__":
     # Run the test

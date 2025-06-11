@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Ratings Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #283593;
+            --accent-color: #3949ab;
+            --background-color: #f5f5f5;
+            --text-color: #333;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            color: var(--text-color);
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .google-sheet-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+        }
+
+        .google-sheet-section h2 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .google-sheet-link {
+            display: inline-block;
+            background-color: white;
+            color: var(--primary-color);
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .google-sheet-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .ratings-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .ratings-table th {
+            background: var(--secondary-color);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .ratings-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .ratings-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .ratings-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .rating-cell {
+            font-weight: 500;
+            color: var(--accent-color);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .success-message {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .filter-section {
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .search-input {
+            padding: 0.5rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            width: 250px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .refresh-button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .refresh-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .sync-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            margin-right: 0.5rem;
+        }
+
+        .sync-button:hover {
+            background-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>DUCC Ratinngs</h1>
+            <p>Track chess ratings across multiple platforms</p>
+        </div>
+
+        <div class="google-sheet-section">
+            <h2>Player Registration</h2>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdazyWNy-OBVFrrxxlie0QHm6x7eXI9lcT8S45D_PCBJFYdcw/viewform"
+               class="google-sheet-link"
+               target="_blank">
+                Register Your Chess.com and Lichess Usernames
+            </a>
+        </div>        <div class="filter-section">
+            <input type="text"
+                   class="search-input"
+                   id="searchInput"
+                   placeholder="Search by name...">
+            <button class="sync-button" id="syncButton">
+                Sync from Sheet
+            </button>
+            <button class="refresh-button" id="refreshButton">
+                Refresh Ratings
+            </button>
+        </div>
+
+        <table class="ratings-table">            <thead>                <tr>
+                    <th>Name</th>
+                    <th>FIDE ID</th>
+                    <th>FIDE Rating</th>
+                </tr>
+            </thead>
+            <tbody id="ratingsBody">
+                <!-- Ratings data will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+        let players = [];
+
+        async function fetchRatings() {
+            try {
+                const response = await fetch(`${API_URL}/players/ratings/`);
+                const data = await response.json();
+                players = data;
+                displayRatings(players);
+            } catch (error) {
+                showError('Failed to fetch ratings. Please try again later.');
+                console.error('Error:', error);
+            }
+        }
+
+        function displayRatings(playersData) {
+            const tbody = document.getElementById('ratingsBody');
+            tbody.innerHTML = '';
+
+            if (playersData.length === 0) {                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="3" style="text-align: center;">
+                            No players found. Please sync data from the Google Sheet.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }            playersData.forEach(player => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${player.name}</td>
+                    <td>${player.fide_id}</td>
+                    <td class="rating-cell">${player.fide_rating}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+
+            const container = document.querySelector('.container');
+            container.insertBefore(errorDiv, document.querySelector('.ratings-table'));
+
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.textContent = message;
+
+            const container = document.querySelector('.container');
+            container.insertBefore(successDiv, document.querySelector('.ratings-table'));
+
+            setTimeout(() => {
+                successDiv.remove();
+            }, 5000);
+        }        function filterPlayers(searchTerm) {
+            const filtered = players.filter(player =>
+                player.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            displayRatings(filtered);
+        }
+
+        async function syncFromSheet() {
+            try {
+                const spreadsheetId = '1FmzuR1jxHTfn8BCWsSztPtW8yfQJheij4NlU-lPPrKI';
+                const range = 'Sheet1!A:B';
+                
+                const response = await fetch(`${API_URL}/sync/sheet/?spreadsheet_id=${spreadsheetId}&range_name=${range}`, {
+                    method: 'POST'
+                });
+                  const result = await response.json();
+                if (!response.ok) {
+                    throw new Error(result.detail || 'Failed to sync from sheet');
+                }
+
+                const details = result.details || {};
+                showSuccess(`Successfully synced ${details.success_count || 0} players from sheet. ${details.error_count || 0} errors.`);
+                await fetchRatings();
+            } catch (error) {
+                showError('Failed to sync from sheet. Please try again.');
+                console.error('Error:', error);
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            filterPlayers(e.target.value);
+        });
+
+        document.getElementById('refreshButton').addEventListener('click', () => {
+            fetchRatings();
+        });
+
+        document.getElementById('syncButton').addEventListener('click', () => {
+            syncFromSheet();
+        });
+
+        // Initial load
+        fetchRatings();
+    </script>
+</body>
+</html>
