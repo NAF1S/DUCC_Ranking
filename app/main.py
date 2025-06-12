@@ -19,19 +19,21 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="DUCC Player Ranking")
 
-# Enable CORS
+# Enable CORS for Vercel deployment
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # Update this with your Vercel frontend URL in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # Mount static files
-project_dir = os.path.dirname(os.path.dirname(__file__))
-static_dir = os.path.join(project_dir, "static")
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
+if not os.getenv("VERCEL"):
+    # Only mount static files in local development
+    project_dir = os.path.dirname(os.path.dirname(__file__))
+    static_dir = os.path.join(project_dir, "static")
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 @app.get("/")
 async def read_root():

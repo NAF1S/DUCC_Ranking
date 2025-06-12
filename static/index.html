@@ -156,12 +156,32 @@
             background-color: var(--secondary-color);
         }
 
+        .admin-toggle-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .admin-toggle-button:hover {
+            background-color: #0056b3;
+        }
+
         .admin-section {
+            display: none;  /* Hide by default */
             background: white;
             padding: 2rem;
             border-radius: 10px;
             margin-bottom: 2rem;
             box-shadow: var(--card-shadow);
+        }
+
+        .admin-mode .admin-section {
+            display: block;  /* Show when admin mode is active */
         }
 
         .admin-section h2 {
@@ -224,6 +244,71 @@
         .delete-button:hover {
             background-color: #c82333;
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal button {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #adminLoginButton {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        #adminLoginButton:hover {
+            background-color: var(--secondary-color);
+        }
+
+        #adminCancelButton {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        #adminCancelButton:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
@@ -231,7 +316,8 @@
         <div class="header">
             <h1>DUCC Ratings</h1>
             <p>Track chess ratings across multiple platforms</p>
-        </div>        <div class="filter-section">
+        </div>
+        <div class="filter-section">
             <input type="text"
                    class="search-input"
                    id="searchInput"
@@ -239,10 +325,22 @@
             <button class="refresh-button" id="refreshButton">
                 Refresh Ratings
             </button>
+            <button class="admin-toggle-button" id="adminModeButton">
+                Toggle Admin Mode
+            </button>
+        </div>
+
+        <div id="adminAuthModal" class="modal">
+            <div class="modal-content">
+                <h2>Admin Authentication</h2>
+                <input type="password" id="adminPassword" placeholder="Enter admin password">
+                <button id="adminLoginButton">Login</button>
+                <button id="adminCancelButton">Cancel</button>
+            </div>
         </div>
 
         <div class="admin-section">
-            <h2>Register</h2>
+            <h2>Register Player</h2>
             <form id="addPlayerForm" class="admin-form">
                 <div class="form-group">
                     <input type="text" id="playerName" placeholder="Player Name" required>
@@ -273,11 +371,15 @@
                 <!-- Ratings data will be inserted here -->
             </tbody>
         </table>
-    </div>
+    </div>    <script>
+        const API_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:8000' 
+            : window.location.origin;
+        let players = [];
+        let isAdmin = false;
+        const ADMIN_PASSWORD = 'admin123'; // In a real app, this would be handled securely on the backend
 
-    <script>
-        const API_URL = 'http://localhost:8000';
-        let players = [];        async function fetchRatings() {
+        async function fetchRatings() {
             const tbody = document.getElementById('ratingsBody');            tbody.innerHTML = `
                 <tr>
                     <td colspan="6" class="loading">
@@ -313,7 +415,6 @@
                 return;
             }
 
-            // Sort players by FIDE rating (highest to lowest)
             playersData.sort((a, b) => {
                 const ratingA = a.fide_rating !== '-' ? parseFloat(a.fide_rating) : -1;
                 const ratingB = b.fide_rating !== '-' ? parseFloat(b.fide_rating) : -1;
@@ -333,7 +434,7 @@
                     <td class="rating-cell">${chesscomRating}</td>
                     <td class="rating-cell">${lichessRating}</td>
                     <td>
-                        <button class="delete-button" onclick="deletePlayer('${player.name}')">Delete</button>
+                        ${isAdmin ? `<button class="delete-button" onclick="deletePlayer('${player.name}')">Delete</button>` : ''}
                     </td>
                 `;
                 tbody.appendChild(row);
@@ -372,6 +473,11 @@
         }
 
         async function deletePlayer(playerName) {
+            if (!isAdmin) {
+                showError('You must be an admin to delete players');
+                return;
+            }
+
             if (!confirm(`Are you sure you want to delete ${playerName}?`)) {
                 return;
             }
@@ -394,7 +500,53 @@
             }
         }
 
+        // Admin Authentication
+        function showAdminModal() {
+            document.getElementById('adminAuthModal').style.display = 'block';
+        }
+
+        function hideAdminModal() {
+            document.getElementById('adminAuthModal').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        function handleAdminAuth() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                isAdmin = true;
+                document.getElementById('adminModeButton').textContent = 'Admin Mode: ON';
+                document.getElementById('adminModeButton').classList.add('active');
+                document.querySelector('.container').classList.add('admin-mode');
+                hideAdminModal();
+                displayRatings(players);
+                showSuccess('Admin mode activated');
+            } else {
+                showError('Invalid password');
+            }
+        }
+
+        function toggleAdminMode() {
+            if (isAdmin) {
+                isAdmin = false;
+                document.getElementById('adminModeButton').textContent = 'Toggle Admin Mode';
+                document.getElementById('adminModeButton').classList.remove('active');
+                document.querySelector('.container').classList.remove('admin-mode');
+                displayRatings(players);
+            } else {
+                showAdminModal();
+            }
+        }
+
         // Event Listeners
+        document.getElementById('adminModeButton').addEventListener('click', toggleAdminMode);
+        document.getElementById('adminLoginButton').addEventListener('click', handleAdminAuth);
+        document.getElementById('adminCancelButton').addEventListener('click', hideAdminModal);
+        document.getElementById('adminPassword').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleAdminAuth();
+            }
+        });
+
         document.getElementById('searchInput').addEventListener('input', (e) => {
             filterPlayers(e.target.value);
         });
@@ -405,6 +557,11 @@
 
         document.getElementById('addPlayerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            if (!isAdmin) {
+                showError('You must be an admin to add players');
+                return;
+            }
             
             const playerData = {
                 name: document.getElementById('playerName').value,
