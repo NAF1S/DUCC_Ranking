@@ -16,21 +16,16 @@ class ChessService:
     @staticmethod
     @async_retry(retries=3, delay=1, backoff=2, logger=logger)
     async def get_chesscom_rating(username: str) -> float:
-        """Fetch Chess.com rating for a player"""
+        """Fetch Chess.com rapid rating for a player"""
         try:
             url = f"https://api.chess.com/pub/player/{username}/stats"
             async with aiohttp.ClientSession() as session:
                 async with session.get(url) as response:
                     if response.status == 200:
                         data = await response.json()
-                        # Get the highest rating from all time controls
-                        ratings = [
-                            data.get('chess_daily', {}).get('last', {}).get('rating', 0),
-                            data.get('chess_rapid', {}).get('last', {}).get('rating', 0),
-                            data.get('chess_blitz', {}).get('last', {}).get('rating', 0),
-                            data.get('chess_bullet', {}).get('last', {}).get('rating', 0)
-                        ]
-                        return max(ratings) if max(ratings) > 0 else None
+                        # Get rapid rating only
+                        rapid_rating = data.get('chess_rapid', {}).get('last', {}).get('rating', 0)
+                        return rapid_rating if rapid_rating > 0 else None
                     elif response.status == 404:
                         logger.warning(f"Player {username} not found on Chess.com")
                         return None
@@ -44,21 +39,16 @@ class ChessService:
     @staticmethod
     @async_retry(retries=3, delay=1, backoff=2, logger=logger)
     async def get_lichess_rating(username: str) -> float:
-        """Fetch Lichess rating for a player"""
+        """Fetch Lichess rapid rating for a player"""
         try:
             url = f"https://lichess.org/api/user/{username}"
             async with aiohttp.ClientSession() as session:
                 async with session.get(url) as response:
                     if response.status == 200:
                         data = await response.json()
-                        # Get the highest rating from all time controls
-                        ratings = [
-                            data.get('perfs', {}).get('bullet', {}).get('rating', 0),
-                            data.get('perfs', {}).get('blitz', {}).get('rating', 0),
-                            data.get('perfs', {}).get('rapid', {}).get('rating', 0),
-                            data.get('perfs', {}).get('classical', {}).get('rating', 0)
-                        ]
-                        return max(ratings) if max(ratings) > 0 else None
+                        # Get rapid rating only
+                        rapid_rating = data.get('perfs', {}).get('rapid', {}).get('rating', 0)
+                        return rapid_rating if rapid_rating > 0 else None
                     elif response.status == 404:
                         logger.warning(f"Player {username} not found on Lichess")
                         return None
@@ -260,13 +250,13 @@ class ChessService:
                 if not isinstance(result, Exception) and result is not None:
                     results[platform] = result
                     
-                    # Update highest overall rating
+            # Update highest overall rapid rating
                     if platform == 'fide':
-                        fide_highest = await ChessService.get_fide_highest_rating(fide_id)
-                        if fide_highest and fide_highest > results['highest_overall']:
-                            results['highest_overall'] = fide_highest
+                        if result and result.get('rapid_rating'):
+                            rapid_rating = result['rapid_rating']
+                            results['highest_overall'] = max(results['highest_overall'], rapid_rating)
                     else:
-                        if result > results['highest_overall']:
+                        if result and result > results['highest_overall']:
                             results['highest_overall'] = result
         
         return results

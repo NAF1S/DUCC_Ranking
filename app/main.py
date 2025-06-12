@@ -10,7 +10,6 @@ from . import models, database, schemas
 from .database import engine, SessionLocal
 from .services import ChessService
 from .logger import setup_logger
-from . import sheet_sync
 
 # Set up logger
 logger = setup_logger('main')
@@ -76,16 +75,28 @@ async def update_player_ratings(player: models.Player, db: Session):
 @app.post("/players/", response_model=schemas.Player)
 async def create_player(player: schemas.PlayerCreate, db: Session = Depends(get_db)):
     """Create a new player"""
-    if not player.chesscom_username and not player.lichess_username:
-        raise HTTPException(status_code=400, detail="At least one username (Chess.com or Lichess) is required")
+    # At least one identifier (FIDE ID, Chess.com username, or Lichess username) is required
+    if not player.fide_id and not player.chesscom_username and not player.lichess_username:
+        raise HTTPException(
+            status_code=400, 
+            detail="At least one identifier (FIDE ID, Chess.com username, or Lichess username) is required"
+        )
 
     db_player = models.Player(**player.dict())
     db.add(db_player)
-    db.commit()
-    db.refresh(db_player)
+    
+    try:
+        db.commit()
+        db.refresh(db_player)
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Error creating player: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
 
     # Update ratings in background
-    await update_player_ratings(db_player, db)
+    if db_player.chesscom_username or db_player.lichess_username:
+        await update_player_ratings(db_player, db)
+    
     return db_player
 
 @app.get("/players/", response_model=List[schemas.Player])
@@ -118,85 +129,80 @@ async def update_player(player_id: int, db: Session = Depends(get_db)):
 
 @app.get("/players/ratings/")
 async def get_player_ratings(db: Session = Depends(get_db)):
-    """Get all players with their names and FIDE IDs"""
+    """Get all players with their names, FIDE IDs, and ratings from all platforms"""
     players = db.query(models.Player).all()
     ratings_list = []
 
     for player in players:
-        if player.fide_id:
-            try:
-                # Fetch FIDE rating for player
-                fide_data = await ChessService.get_fide_rating(player.fide_id)
-                fide_rating = fide_data.get('standard_rating') if fide_data else None
-            except Exception as e:
-                logger.error(f"Error fetching FIDE rating for player {player.name}: {str(e)}")
-                fide_rating = None
-        else:
-            fide_rating = None
-
-        ratings_list.append({
+        # Initialize rating data
+        rating_data = {
             "name": player.name or "-",
             "fide_id": str(player.fide_id) if player.fide_id else "-",
-            "fide_rating": str(fide_rating) if fide_rating else "-"
-        })
+            "fide_rating": "-",
+            "chesscom_rating": "-",
+            "lichess_rating": "-"
+        }
 
+        # If player has FIDE ID, fetch their rating
+        if player.fide_id:
+            try:
+                logger.info(f"Fetching FIDE rating for player {player.name} with ID {player.fide_id}")
+                fide_data = await ChessService.get_fide_rating(player.fide_id)
+                if fide_data and fide_data.get('rapid_rating'):
+                    rating_data["fide_rating"] = str(fide_data['rapid_rating'])
+                    logger.info(f"Found FIDE rapid rating {fide_data['rapid_rating']} for player {player.name}")
+            except Exception as e:
+                logger.error(f"Error fetching FIDE rating for player {player.name}: {str(e)}")
+
+        # Get Chess.com rating
+        if player.chesscom_username:
+            try:
+                logger.info(f"Fetching Chess.com rating for player {player.name}")
+                chesscom_data = await ChessService.get_chesscom_rating(player.chesscom_username)
+                if chesscom_data:
+                    rating_data["chesscom_rating"] = str(chesscom_data)
+            except Exception as e:
+                logger.error(f"Error fetching Chess.com rating for player {player.name}: {str(e)}")
+
+        # Get Lichess rating
+        if player.lichess_username:
+            try:
+                logger.info(f"Fetching Lichess rating for player {player.name}")
+                lichess_data = await ChessService.get_lichess_rating(player.lichess_username)
+                if lichess_data:
+                    rating_data["lichess_rating"] = str(lichess_data)
+            except Exception as e:
+                logger.error(f"Error fetching Lichess rating for player {player.name}: {str(e)}")
+                
+        ratings_list.append(rating_data)
+
+    # Sort the ratings list by FIDE rating (highest to lowest)
+    def get_fide_rating(player):
+        try:
+            return float(player['fide_rating']) if player['fide_rating'] != '-' else -1
+        except (ValueError, TypeError):
+            return -1
+
+    ratings_list.sort(key=get_fide_rating, reverse=True)
     return ratings_list
 
-@app.post("/sync/sheet/")
-async def sync_google_sheet(
-    spreadsheet_id: str,
-    range_name: str = "Sheet1!A:B",
-    db: Session = Depends(get_db)
-):
-    """Sync player names and FIDE IDs from Google Sheet"""
+
+
+@app.delete("/players/delete/{player_name}")
+async def delete_player(player_name: str, db: Session = Depends(get_db)):
+    """Delete a player by name"""
     try:
-        await sheet_sync.sync_sheet_data(db, spreadsheet_id, range_name)
-        return {"message": "Successfully synced data from Google Sheet"}
+        # Find and delete the player
+        player = db.query(models.Player).filter(models.Player.name == player_name).first()
+        if not player:
+            raise HTTPException(status_code=404, detail=f"Player {player_name} not found")
+        
+        db.delete(player)
+        db.commit()
+        
+        return {"message": f"Player {player_name} deleted successfully"}
     except Exception as e:
-        logger.error(f"Error in sheet sync: {str(e)}")
-        raise HTTPException(
-            status_code=500,
-            detail=f"Failed to sync data from Google Sheet: {str(e)}"
-        )
+        db.rollback()
+        logger.error(f"Error deleting player {player_name}: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
-async def insert_test_data(db: Session):
-    """Insert test data if database is empty"""
-    if db.query(models.Player).count() == 0:
-        test_players = [
-            {
-                "name": "John Doe",
-                "fide_id": 12345678,
-                "chesscom_username": "JohnDoe123",
-                "lichess_username": "JohnLichess",
-                "chesscom_rating": 1850,
-                "lichess_rating": 1920
-            },
-            {
-                "name": "Alice Smith",
-                "fide_id": 23456789,
-                "chesscom_username": "AliceChess",
-                "lichess_username": "AliceLichess",
-                "chesscom_rating": 2100,
-                "lichess_rating": 2150
-            }
-        ]
-        
-        for player_data in test_players:
-            player = models.Player(**player_data)
-            db.add(player)
-        
-        try:
-            db.commit()
-            logger.info("Test data inserted successfully")
-        except Exception as e:
-            db.rollback()
-            logger.error(f"Error inserting test data: {str(e)}")
-
-# Call insert_test_data on startup
-@app.on_event("startup")
-async def startup_event():
-    db = SessionLocal()
-    try:
-        await insert_test_data(db)
-    finally:
-        db.close()

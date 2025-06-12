@@ -47,36 +47,6 @@
             opacity: 0.8;
         }
 
-        .google-sheet-section {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            padding: 2rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-            text-align: center;
-            box-shadow: var(--card-shadow);
-        }
-
-        .google-sheet-section h2 {
-            color: white;
-            margin-bottom: 1rem;
-        }
-
-        .google-sheet-link {
-            display: inline-block;
-            background-color: white;
-            color: var(--primary-color);
-            padding: 1rem 2rem;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .google-sheet-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-
         .ratings-table {
             width: 100%;
             border-collapse: separate;
@@ -186,54 +156,117 @@
             background-color: var(--secondary-color);
         }
 
-        .sync-button {
+        .admin-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .admin-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .admin-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .admin-button {
+            grid-column: span 2;
             background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .admin-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .delete-button {
+            background-color: #dc3545;
             color: white;
             border: none;
             padding: 0.5rem 1rem;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.9rem;
             transition: background-color 0.3s;
-            margin-right: 0.5rem;
         }
 
-        .sync-button:hover {
-            background-color: var(--secondary-color);
+        .delete-button:hover {
+            background-color: #c82333;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>DUCC Ratinngs</h1>
+            <h1>DUCC Ratings</h1>
             <p>Track chess ratings across multiple platforms</p>
-        </div>
-
-        <div class="google-sheet-section">
-            <h2>Player Registration</h2>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdazyWNy-OBVFrrxxlie0QHm6x7eXI9lcT8S45D_PCBJFYdcw/viewform"
-               class="google-sheet-link"
-               target="_blank">
-                Register Your Chess.com and Lichess Usernames
-            </a>
         </div>        <div class="filter-section">
             <input type="text"
                    class="search-input"
                    id="searchInput"
                    placeholder="Search by name...">
-            <button class="sync-button" id="syncButton">
-                Sync from Sheet
-            </button>
             <button class="refresh-button" id="refreshButton">
                 Refresh Ratings
             </button>
         </div>
 
+        <div class="admin-section">
+            <h2>Register</h2>
+            <form id="addPlayerForm" class="admin-form">
+                <div class="form-group">
+                    <input type="text" id="playerName" placeholder="Player Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="fideId" placeholder="FIDE ID">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="chesscomUsername" placeholder="Chess.com Username">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="lichessUsername" placeholder="Lichess Username">
+                </div>
+                <button type="submit" class="admin-button">Add Player</button>
+            </form>
+        </div>
+
         <table class="ratings-table">            <thead>                <tr>
                     <th>Name</th>
                     <th>FIDE ID</th>
-                    <th>FIDE Rating</th>
+                    <th>FIDE Rapid</th>
+                    <th>Chess.com Rapid</th>
+                    <th>Lichess Rapid</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="ratingsBody">
@@ -244,9 +277,16 @@
 
     <script>
         const API_URL = 'http://localhost:8000';
-        let players = [];
-
-        async function fetchRatings() {
+        let players = [];        async function fetchRatings() {
+            const tbody = document.getElementById('ratingsBody');            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="loading">
+                        <div class="loading-spinner"></div>
+                        <div>Loading ratings...</div>
+                    </td>
+                </tr>
+            `;
+            
             try {
                 const response = await fetch(`${API_URL}/players/ratings/`);
                 const data = await response.json();
@@ -261,21 +301,40 @@
         function displayRatings(playersData) {
             const tbody = document.getElementById('ratingsBody');
             tbody.innerHTML = '';
-
-            if (playersData.length === 0) {                tbody.innerHTML = `
+            
+            if (playersData.length === 0) {
+                tbody.innerHTML = `
                     <tr>
-                        <td colspan="3" style="text-align: center;">
-                            No players found. Please sync data from the Google Sheet.
+                        <td colspan="6" style="text-align: center;">
+                            No players found. Please add players using the form above.
                         </td>
                     </tr>
                 `;
                 return;
-            }            playersData.forEach(player => {
+            }
+
+            // Sort players by FIDE rating (highest to lowest)
+            playersData.sort((a, b) => {
+                const ratingA = a.fide_rating !== '-' ? parseFloat(a.fide_rating) : -1;
+                const ratingB = b.fide_rating !== '-' ? parseFloat(b.fide_rating) : -1;
+                return ratingB - ratingA;
+            });
+
+            playersData.forEach(player => {
                 const row = document.createElement('tr');
+                const fideRating = player.fide_rating !== "-" ? player.fide_rating : "No rating";
+                const chesscomRating = player.chesscom_rating !== "-" ? player.chesscom_rating : "No rating";
+                const lichessRating = player.lichess_rating !== "-" ? player.lichess_rating : "No rating";
+                
                 row.innerHTML = `
                     <td>${player.name}</td>
                     <td>${player.fide_id}</td>
-                    <td class="rating-cell">${player.fide_rating}</td>
+                    <td class="rating-cell">${fideRating}</td>
+                    <td class="rating-cell">${chesscomRating}</td>
+                    <td class="rating-cell">${lichessRating}</td>
+                    <td>
+                        <button class="delete-button" onclick="deletePlayer('${player.name}')">Delete</button>
+                    </td>
                 `;
                 tbody.appendChild(row);
             });
@@ -312,24 +371,25 @@
             displayRatings(filtered);
         }
 
-        async function syncFromSheet() {
+        async function deletePlayer(playerName) {
+            if (!confirm(`Are you sure you want to delete ${playerName}?`)) {
+                return;
+            }
+            
             try {
-                const spreadsheetId = '1FmzuR1jxHTfn8BCWsSztPtW8yfQJheij4NlU-lPPrKI';
-                const range = 'Sheet1!A:B';
-                
-                const response = await fetch(`${API_URL}/sync/sheet/?spreadsheet_id=${spreadsheetId}&range_name=${range}`, {
-                    method: 'POST'
+                const response = await fetch(`${API_URL}/players/delete/${encodeURIComponent(playerName)}`, {
+                    method: 'DELETE'
                 });
-                  const result = await response.json();
+
                 if (!response.ok) {
-                    throw new Error(result.detail || 'Failed to sync from sheet');
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Failed to delete player');
                 }
 
-                const details = result.details || {};
-                showSuccess(`Successfully synced ${details.success_count || 0} players from sheet. ${details.error_count || 0} errors.`);
+                showSuccess(`Player ${playerName} deleted successfully`);
                 await fetchRatings();
             } catch (error) {
-                showError('Failed to sync from sheet. Please try again.');
+                showError(error.message);
                 console.error('Error:', error);
             }
         }
@@ -343,8 +403,37 @@
             fetchRatings();
         });
 
-        document.getElementById('syncButton').addEventListener('click', () => {
-            syncFromSheet();
+        document.getElementById('addPlayerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const playerData = {
+                name: document.getElementById('playerName').value,
+                fide_id: document.getElementById('fideId').value ? parseInt(document.getElementById('fideId').value) : null,
+                chesscom_username: document.getElementById('chesscomUsername').value || null,
+                lichess_username: document.getElementById('lichessUsername').value || null
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/players/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(playerData)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Failed to add player');
+                }
+
+                showSuccess('Player added successfully');
+                e.target.reset();
+                await fetchRatings();
+            } catch (error) {
+                showError(error.message);
+                console.error('Error:', error);
+            }
         });
 
         // Initial load

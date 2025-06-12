@@ -13,6 +13,8 @@ class PlayerCreate(PlayerBase):
     @classmethod
     def validate_chesscom_username(cls, v):
         if v is not None:
+            if not v:  # Empty string
+                return None
             v = v.strip()
             if not re.match(r'^[a-zA-Z0-9_.-]+$', v):
                 raise ValueError('Chess.com username can only contain alphanumeric characters, dots, dashes, and underscores')
@@ -24,25 +26,28 @@ class PlayerCreate(PlayerBase):
     @classmethod
     def validate_lichess_username(cls, v):
         if v is not None:
+            if not v:  # Empty string
+                return None
             v = v.strip()
             if not re.match(r'^[a-zA-Z0-9_.-]+$', v):
                 raise ValueError('Lichess username can only contain alphanumeric characters, dots, dashes, and underscores')
             if len(v) < 2 or len(v) > 50:
                 raise ValueError('Lichess username must be between 2 and 50 characters')
-        return v    @field_validator('fide_id')
+        return v
+
+    @field_validator('name')
+    @classmethod
+    def validate_name(cls, v):
+        if not v:
+            raise ValueError('Player name is required')
+        return v.strip()
+
+    @field_validator('fide_id')
     @classmethod
     def validate_fide_id(cls, v):
         if v is not None:
             if v < 100000 or v > 99999999:
-                raise ValueError('Invalid FIDE ID format')
-        return v
-
-    @field_validator('*', mode='before')
-    @classmethod
-    def validate_at_least_one(cls, v, info):
-        if info.field_name == 'lichess_username' and not info.data.get('chesscom_username'):
-            if not v:
-                raise ValueError('At least one username (Chess.com or Lichess) is required')
+                raise ValueError('Invalid FIDE ID format (must be between 100000 and 99999999)')
         return v
 
 class Player(PlayerBase):

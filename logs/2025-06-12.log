@@ -1,0 +1,24 @@
+2025-06-12 12:05:32,957 - main - INFO - Fetching FIDE rating for player nafis with ID 10297677
+2025-06-12 12:05:32,957 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10297677
+2025-06-12 12:05:34,739 - services - INFO - Found 3 game type sections
+2025-06-12 12:05:34,740 - services - INFO - Game type 1 rating text: 'Not rated'
+2025-06-12 12:05:34,740 - services - WARNING - No numeric rating found in: Not rated
+2025-06-12 12:05:34,740 - services - INFO - Game type 2 rating text: '1560'
+2025-06-12 12:05:34,740 - services - INFO - Extracted rating: 1560
+2025-06-12 12:05:34,741 - services - INFO - Game type 3 rating text: 'Not rated'
+2025-06-12 12:05:34,741 - services - WARNING - No numeric rating found in: Not rated
+2025-06-12 12:05:34,743 - main - INFO - Found FIDE rapid rating 1560 for player nafis
+2025-06-12 12:05:34,743 - main - INFO - Fetching Chess.com rating for player nafis
+2025-06-12 12:05:35,689 - main - INFO - Fetching Lichess rating for player nafis
+2025-06-12 12:05:36,557 - main - INFO - Fetching FIDE rating for player Md Ahsanul Haque Emon with ID 10279083
+2025-06-12 12:05:36,557 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10279083
+2025-06-12 12:05:39,727 - services - INFO - Found 3 game type sections
+2025-06-12 12:05:39,728 - services - INFO - Game type 1 rating text: '1604'
+2025-06-12 12:05:39,728 - services - INFO - Extracted rating: 1604
+2025-06-12 12:05:39,729 - services - INFO - Game type 2 rating text: '1783'
+2025-06-12 12:05:39,729 - services - INFO - Extracted rating: 1783
+2025-06-12 12:05:39,729 - services - INFO - Game type 3 rating text: '1593'
+2025-06-12 12:05:39,729 - services - INFO - Extracted rating: 1593
+2025-06-12 12:05:39,731 - main - INFO - Found FIDE rapid rating 1783 for player Md Ahsanul Haque Emon
+2025-06-12 12:05:39,731 - main - INFO - Fetching Chess.com rating for player Md Ahsanul Haque Emon
+2025-06-12 12:05:42,233 - main - INFO - Fetching Lichess rating for player Md Ahsanul Haque Emon
