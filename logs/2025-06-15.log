@@ -1,0 +1,299 @@
+2025-06-15 19:06:18,029 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=None, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:06:18,030 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:06:18,030 - main - INFO - Player Akib Hassan ratings: FIDE=None, Chess.com=2020.0, Lichess=1520.0
+2025-06-15 19:06:25,369 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=None, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:06:25,369 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:06:25,369 - main - INFO - Player Akib Hassan ratings: FIDE=None, Chess.com=2020.0, Lichess=1520.0
+2025-06-15 19:07:33,099 - main - INFO - Updating player 1 with data: {'name': 'Md Ahsanul Haque Emon', 'fide_id': 10279083, 'chesscom_username': None, 'lichess_username': None}
+2025-06-15 19:07:33,133 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=None, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:07:33,133 - main - INFO - Refreshing FIDE rating for player Md Ahsanul Haque Emon
+2025-06-15 19:07:33,133 - main - INFO - Fetching FIDE rating for player Md Ahsanul Haque Emon with FIDE ID 10279083
+2025-06-15 19:07:33,133 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10279083
+2025-06-15 19:07:35,477 - services - INFO - Found 3 game type sections
+2025-06-15 19:07:35,478 - services - INFO - Game type 1 rating text: '1604'
+2025-06-15 19:07:35,478 - services - INFO - Extracted rating: 1604
+2025-06-15 19:07:35,479 - services - INFO - Game type 2 rating text: '1783'
+2025-06-15 19:07:35,479 - services - INFO - Extracted rating: 1783
+2025-06-15 19:07:35,479 - services - INFO - Game type 3 rating text: '1593'
+2025-06-15 19:07:35,479 - services - INFO - Extracted rating: 1593
+2025-06-15 19:07:35,481 - main - INFO - Complete FIDE data for Md Ahsanul Haque Emon: {'fide_id': 10279083, 'name': 'Md. Ahsanul Haque Emon', 'country': None, 'standard_rating': 1604, 'rapid_rating': 1783, 'blitz_rating': 1593}
+2025-06-15 19:07:35,481 - main - INFO - Got FIDE rapid rating for player Md Ahsanul Haque Emon: 1783
+2025-06-15 19:07:35,490 - main - INFO - Successfully updated FIDE rating for player Md Ahsanul Haque Emon from None to 1783
+2025-06-15 19:07:35,490 - main - INFO - Successfully updated FIDE rating in database: 1783.0
+2025-06-15 19:07:35,491 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:07:35,492 - main - INFO - Refreshing FIDE rating for player Lokman Sharif
+2025-06-15 19:07:35,492 - main - INFO - Fetching FIDE rating for player Lokman Sharif with FIDE ID 10297677
+2025-06-15 19:07:35,492 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10297677
+2025-06-15 19:07:36,533 - services - INFO - Found 3 game type sections
+2025-06-15 19:07:36,534 - services - INFO - Game type 1 rating text: 'Not rated'
+2025-06-15 19:07:36,534 - services - WARNING - No numeric rating found in: Not rated
+2025-06-15 19:07:36,534 - services - INFO - Game type 2 rating text: '1560'
+2025-06-15 19:07:36,534 - services - INFO - Extracted rating: 1560
+2025-06-15 19:07:36,535 - services - INFO - Game type 3 rating text: 'Not rated'
+2025-06-15 19:07:36,535 - services - WARNING - No numeric rating found in: Not rated
+2025-06-15 19:07:36,536 - main - INFO - Complete FIDE data for Lokman Sharif: {'fide_id': 10297677, 'name': 'Lokman, Sharif', 'country': None, 'standard_rating': None, 'rapid_rating': 1560, 'blitz_rating': None}
+2025-06-15 19:07:36,536 - main - INFO - Got FIDE rapid rating for player Lokman Sharif: 1560
+2025-06-15 19:07:36,538 - main - INFO - Successfully updated FIDE rating for player Lokman Sharif from 1560.0 to 1560
+2025-06-15 19:07:36,539 - main - INFO - Successfully updated FIDE rating in database: 1560.0
+2025-06-15 19:07:36,539 - main - INFO - Refreshing Chess.com rating for player Lokman Sharif
+2025-06-15 19:07:37,454 - main - INFO - Refreshing Lichess rating for player Lokman Sharif
+2025-06-15 19:07:37,995 - main - INFO - Player Akib Hassan ratings: FIDE=None, Chess.com=2020.0, Lichess=1520.0
+2025-06-15 19:07:37,995 - main - INFO - Refreshing FIDE rating for player Akib Hassan
+2025-06-15 19:07:37,995 - main - INFO - Fetching FIDE rating for player Akib Hassan with FIDE ID 10265880
+2025-06-15 19:07:37,996 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10265880
+2025-06-15 19:07:39,680 - services - INFO - Found 3 game type sections
+2025-06-15 19:07:39,680 - services - INFO - Game type 1 rating text: 'Not rated'
+2025-06-15 19:07:39,680 - services - WARNING - No numeric rating found in: Not rated
+2025-06-15 19:07:39,681 - services - INFO - Game type 2 rating text: '1685'
+2025-06-15 19:07:39,681 - services - INFO - Extracted rating: 1685
+2025-06-15 19:07:39,681 - services - INFO - Game type 3 rating text: '1707'
+2025-06-15 19:07:39,681 - services - INFO - Extracted rating: 1707
+2025-06-15 19:07:39,683 - main - INFO - Complete FIDE data for Akib Hassan: {'fide_id': 10265880, 'name': 'Akib, Hassan', 'country': None, 'standard_rating': None, 'rapid_rating': 1685, 'blitz_rating': 1707}
+2025-06-15 19:07:39,683 - main - INFO - Got FIDE rapid rating for player Akib Hassan: 1685
+2025-06-15 19:07:39,697 - main - INFO - Successfully updated FIDE rating for player Akib Hassan from None to 1685
+2025-06-15 19:07:39,697 - main - INFO - Successfully updated FIDE rating in database: 1685.0
+2025-06-15 19:07:39,698 - main - INFO - Refreshing Chess.com rating for player Akib Hassan
+2025-06-15 19:07:41,302 - main - INFO - Refreshing Lichess rating for player Akib Hassan
+2025-06-15 19:08:24,930 - main - INFO - Updating player 1 with data: {'name': 'Md Ahsanul Haque Emon', 'fide_id': 10279083, 'chesscom_username': None, 'lichess_username': None}
+2025-06-15 19:08:24,945 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=1783.0, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:08:24,947 - main - INFO - Refreshing FIDE rating for player Md Ahsanul Haque Emon
+2025-06-15 19:08:24,947 - main - INFO - Fetching FIDE rating for player Md Ahsanul Haque Emon with FIDE ID 10279083
+2025-06-15 19:08:24,947 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10279083
+2025-06-15 19:08:33,679 - services - INFO - Found 3 game type sections
+2025-06-15 19:08:33,679 - services - INFO - Game type 1 rating text: '1604'
+2025-06-15 19:08:33,680 - services - INFO - Extracted rating: 1604
+2025-06-15 19:08:33,680 - services - INFO - Game type 2 rating text: '1783'
+2025-06-15 19:08:33,680 - services - INFO - Extracted rating: 1783
+2025-06-15 19:08:33,680 - services - INFO - Game type 3 rating text: '1593'
+2025-06-15 19:08:33,680 - services - INFO - Extracted rating: 1593
+2025-06-15 19:08:33,683 - main - INFO - Complete FIDE data for Md Ahsanul Haque Emon: {'fide_id': 10279083, 'name': 'Md. Ahsanul Haque Emon', 'country': None, 'standard_rating': 1604, 'rapid_rating': 1783, 'blitz_rating': 1593}
+2025-06-15 19:08:33,683 - main - INFO - Got FIDE rapid rating for player Md Ahsanul Haque Emon: 1783
+2025-06-15 19:08:33,685 - main - INFO - Successfully updated FIDE rating for player Md Ahsanul Haque Emon from 1783.0 to 1783
+2025-06-15 19:08:33,686 - main - INFO - Successfully updated FIDE rating in database: 1783.0
+2025-06-15 19:08:33,688 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:08:33,688 - main - INFO - Refreshing FIDE rating for player Lokman Sharif
+2025-06-15 19:08:33,688 - main - INFO - Fetching FIDE rating for player Lokman Sharif with FIDE ID 10297677
+2025-06-15 19:08:33,688 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10297677
+2025-06-15 19:08:34,731 - services - INFO - Found 3 game type sections
+2025-06-15 19:08:34,732 - services - INFO - Game type 1 rating text: 'Not rated'
+2025-06-15 19:08:34,732 - services - WARNING - No numeric rating found in: Not rated
+2025-06-15 19:08:34,732 - services - INFO - Game type 2 rating text: '1560'
+2025-06-15 19:08:34,733 - services - INFO - Extracted rating: 1560
+2025-06-15 19:08:34,733 - services - INFO - Game type 3 rating text: 'Not rated'
+2025-06-15 19:08:34,733 - services - WARNING - No numeric rating found in: Not rated
+2025-06-15 19:08:34,736 - main - INFO - Complete FIDE data for Lokman Sharif: {'fide_id': 10297677, 'name': 'Lokman, Sharif', 'country': None, 'standard_rating': None, 'rapid_rating': 1560, 'blitz_rating': None}
+2025-06-15 19:08:34,736 - main - INFO - Got FIDE rapid rating for player Lokman Sharif: 1560
+2025-06-15 19:08:34,737 - main - INFO - Successfully updated FIDE rating for player Lokman Sharif from 1560.0 to 1560
+2025-06-15 19:08:34,738 - main - INFO - Successfully updated FIDE rating in database: 1560.0
+2025-06-15 19:08:34,738 - main - INFO - Refreshing Chess.com rating for player Lokman Sharif
+2025-06-15 19:08:35,348 - main - INFO - Refreshing Lichess rating for player Lokman Sharif
+2025-06-15 19:08:35,903 - main - INFO - Player Akib Hassan ratings: FIDE=1685.0, Chess.com=2028.0, Lichess=1520.0
+2025-06-15 19:08:35,903 - main - INFO - Refreshing FIDE rating for player Akib Hassan
+2025-06-15 19:08:35,904 - main - INFO - Fetching FIDE rating for player Akib Hassan with FIDE ID 10265880
+2025-06-15 19:08:35,904 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10265880
+2025-06-15 19:08:37,159 - services - INFO - Found 3 game type sections
+2025-06-15 19:08:37,160 - services - INFO - Game type 1 rating text: 'Not rated'
+2025-06-15 19:08:37,160 - services - WARNING - No numeric rating found in: Not rated
+2025-06-15 19:08:37,161 - services - INFO - Game type 2 rating text: '1685'
+2025-06-15 19:08:37,161 - services - INFO - Extracted rating: 1685
+2025-06-15 19:08:37,161 - services - INFO - Game type 3 rating text: '1707'
+2025-06-15 19:08:37,161 - services - INFO - Extracted rating: 1707
+2025-06-15 19:08:37,164 - main - INFO - Complete FIDE data for Akib Hassan: {'fide_id': 10265880, 'name': 'Akib, Hassan', 'country': None, 'standard_rating': None, 'rapid_rating': 1685, 'blitz_rating': 1707}
+2025-06-15 19:08:37,164 - main - INFO - Got FIDE rapid rating for player Akib Hassan: 1685
+2025-06-15 19:08:37,166 - main - INFO - Successfully updated FIDE rating for player Akib Hassan from 1685.0 to 1685
+2025-06-15 19:08:37,167 - main - INFO - Successfully updated FIDE rating in database: 1685.0
+2025-06-15 19:08:37,167 - main - INFO - Refreshing Chess.com rating for player Akib Hassan
+2025-06-15 19:08:38,922 - main - INFO - Refreshing Lichess rating for player Akib Hassan
+2025-06-15 19:10:00,616 - main - INFO - Fetching FIDE rating for player Tanvir Alam with FIDE ID 10253556
+2025-06-15 19:10:00,616 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10253556
+2025-06-15 19:10:02,815 - services - INFO - Found 3 game type sections
+2025-06-15 19:10:02,816 - services - INFO - Game type 1 rating text: '1895'
+2025-06-15 19:10:02,816 - services - INFO - Extracted rating: 1895
+2025-06-15 19:10:02,816 - services - INFO - Game type 2 rating text: '1964'
+2025-06-15 19:10:02,817 - services - INFO - Extracted rating: 1964
+2025-06-15 19:10:02,817 - services - INFO - Game type 3 rating text: '1808'
+2025-06-15 19:10:02,817 - services - INFO - Extracted rating: 1808
+2025-06-15 19:10:02,819 - main - INFO - Complete FIDE data for Tanvir Alam: {'fide_id': 10253556, 'name': 'Tanvir, Alam', 'country': None, 'standard_rating': 1895, 'rapid_rating': 1964, 'blitz_rating': 1808}
+2025-06-15 19:10:02,819 - main - INFO - Got FIDE rapid rating for player Tanvir Alam: 1964
+2025-06-15 19:10:02,824 - main - INFO - Successfully updated FIDE rating for player Tanvir Alam from None to 1964
+2025-06-15 19:10:04,996 - main - ERROR - Error creating player: Textual SQL expression 'UPDATE players SET id = i...' should be explicitly declared as text('UPDATE players SET id = i...')
+2025-06-15 19:10:09,820 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=1783.0, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:10:09,821 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:10:09,821 - main - INFO - Player Akib Hassan ratings: FIDE=1685.0, Chess.com=2028.0, Lichess=1520.0
+2025-06-15 19:10:09,821 - main - INFO - Player Tanvir Alam ratings: FIDE=1964.0, Chess.com=2166.0, Lichess=2213.0
+2025-06-15 19:15:15,724 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=1783.0, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:15:15,724 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:15:15,725 - main - INFO - Player Akib Hassan ratings: FIDE=1685.0, Chess.com=2028.0, Lichess=1520.0
+2025-06-15 19:15:15,725 - main - INFO - Player Tanvir Alam ratings: FIDE=1964.0, Chess.com=2166.0, Lichess=2213.0
+2025-06-15 19:30:02,441 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=1783.0, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:30:02,442 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:30:02,442 - main - INFO - Player Akib Hassan ratings: FIDE=1685.0, Chess.com=2028.0, Lichess=1520.0
+2025-06-15 19:30:02,442 - main - INFO - Player Tanvir Alam ratings: FIDE=1964.0, Chess.com=2166.0, Lichess=2213.0
+2025-06-15 19:35:21,561 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=1783.0, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:35:21,561 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:35:21,561 - main - INFO - Player Akib Hassan ratings: FIDE=1685.0, Chess.com=2028.0, Lichess=1520.0
+2025-06-15 19:35:21,561 - main - INFO - Player Tanvir Alam ratings: FIDE=1964.0, Chess.com=2166.0, Lichess=2213.0
+2025-06-15 19:36:32,325 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=1783.0, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:36:32,325 - main - INFO - Refreshing FIDE rating for player Md Ahsanul Haque Emon
+2025-06-15 19:36:32,326 - main - INFO - Fetching FIDE rating for player Md Ahsanul Haque Emon with FIDE ID 10279083
+2025-06-15 19:36:32,326 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10279083
+2025-06-15 19:36:34,122 - services - INFO - Found 3 game type sections
+2025-06-15 19:36:34,123 - services - INFO - Game type 1 rating text: '1604'
+2025-06-15 19:36:34,123 - services - INFO - Extracted rating: 1604
+2025-06-15 19:36:34,123 - services - INFO - Game type 2 rating text: '1783'
+2025-06-15 19:36:34,124 - services - INFO - Extracted rating: 1783
+2025-06-15 19:36:34,124 - services - INFO - Game type 3 rating text: '1593'
+2025-06-15 19:36:34,124 - services - INFO - Extracted rating: 1593
+2025-06-15 19:36:34,125 - main - INFO - Complete FIDE data for Md Ahsanul Haque Emon: {'fide_id': 10279083, 'name': 'Md. Ahsanul Haque Emon', 'country': None, 'standard_rating': 1604, 'rapid_rating': 1783, 'blitz_rating': 1593}
+2025-06-15 19:36:34,126 - main - INFO - Got FIDE rapid rating for player Md Ahsanul Haque Emon: 1783
+2025-06-15 19:36:34,128 - main - INFO - Successfully updated FIDE rating for player Md Ahsanul Haque Emon from 1783.0 to 1783
+2025-06-15 19:36:34,128 - main - INFO - Successfully updated FIDE rating in database: 1783.0
+2025-06-15 19:36:34,130 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:36:34,130 - main - INFO - Refreshing FIDE rating for player Lokman Sharif
+2025-06-15 19:36:34,130 - main - INFO - Fetching FIDE rating for player Lokman Sharif with FIDE ID 10297677
+2025-06-15 19:36:34,130 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10297677
+2025-06-15 19:36:35,570 - services - INFO - Found 3 game type sections
+2025-06-15 19:36:35,571 - services - INFO - Game type 1 rating text: 'Not rated'
+2025-06-15 19:36:35,571 - services - WARNING - No numeric rating found in: Not rated
+2025-06-15 19:36:35,571 - services - INFO - Game type 2 rating text: '1560'
+2025-06-15 19:36:35,572 - services - INFO - Extracted rating: 1560
+2025-06-15 19:36:35,572 - services - INFO - Game type 3 rating text: 'Not rated'
+2025-06-15 19:36:35,572 - services - WARNING - No numeric rating found in: Not rated
+2025-06-15 19:36:35,574 - main - INFO - Complete FIDE data for Lokman Sharif: {'fide_id': 10297677, 'name': 'Lokman, Sharif', 'country': None, 'standard_rating': None, 'rapid_rating': 1560, 'blitz_rating': None}
+2025-06-15 19:36:35,574 - main - INFO - Got FIDE rapid rating for player Lokman Sharif: 1560
+2025-06-15 19:36:35,576 - main - INFO - Successfully updated FIDE rating for player Lokman Sharif from 1560.0 to 1560
+2025-06-15 19:36:35,577 - main - INFO - Successfully updated FIDE rating in database: 1560.0
+2025-06-15 19:36:35,577 - main - INFO - Refreshing Chess.com rating for player Lokman Sharif
+2025-06-15 19:36:36,180 - main - INFO - Refreshing Lichess rating for player Lokman Sharif
+2025-06-15 19:36:36,751 - main - INFO - Player Akib Hassan ratings: FIDE=1685.0, Chess.com=2028.0, Lichess=1520.0
+2025-06-15 19:36:36,751 - main - INFO - Refreshing FIDE rating for player Akib Hassan
+2025-06-15 19:36:36,752 - main - INFO - Fetching FIDE rating for player Akib Hassan with FIDE ID 10265880
+2025-06-15 19:36:36,752 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10265880
+2025-06-15 19:36:37,817 - services - INFO - Found 3 game type sections
+2025-06-15 19:36:37,818 - services - INFO - Game type 1 rating text: 'Not rated'
+2025-06-15 19:36:37,818 - services - WARNING - No numeric rating found in: Not rated
+2025-06-15 19:36:37,818 - services - INFO - Game type 2 rating text: '1685'
+2025-06-15 19:36:37,818 - services - INFO - Extracted rating: 1685
+2025-06-15 19:36:37,818 - services - INFO - Game type 3 rating text: '1707'
+2025-06-15 19:36:37,819 - services - INFO - Extracted rating: 1707
+2025-06-15 19:36:37,821 - main - INFO - Complete FIDE data for Akib Hassan: {'fide_id': 10265880, 'name': 'Akib, Hassan', 'country': None, 'standard_rating': None, 'rapid_rating': 1685, 'blitz_rating': 1707}
+2025-06-15 19:36:37,821 - main - INFO - Got FIDE rapid rating for player Akib Hassan: 1685
+2025-06-15 19:36:37,822 - main - INFO - Successfully updated FIDE rating for player Akib Hassan from 1685.0 to 1685
+2025-06-15 19:36:37,823 - main - INFO - Successfully updated FIDE rating in database: 1685.0
+2025-06-15 19:36:37,823 - main - INFO - Refreshing Chess.com rating for player Akib Hassan
+2025-06-15 19:36:39,021 - main - INFO - Refreshing Lichess rating for player Akib Hassan
+2025-06-15 19:36:39,567 - main - INFO - Player Tanvir Alam ratings: FIDE=1964.0, Chess.com=2166.0, Lichess=2213.0
+2025-06-15 19:36:39,567 - main - INFO - Refreshing FIDE rating for player Tanvir Alam
+2025-06-15 19:36:39,567 - main - INFO - Fetching FIDE rating for player Tanvir Alam with FIDE ID 10253556
+2025-06-15 19:36:39,567 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10253556
+2025-06-15 19:36:40,722 - services - INFO - Found 3 game type sections
+2025-06-15 19:36:40,722 - services - INFO - Game type 1 rating text: '1895'
+2025-06-15 19:36:40,723 - services - INFO - Extracted rating: 1895
+2025-06-15 19:36:40,723 - services - INFO - Game type 2 rating text: '1964'
+2025-06-15 19:36:40,724 - services - INFO - Extracted rating: 1964
+2025-06-15 19:36:40,724 - services - INFO - Game type 3 rating text: '1808'
+2025-06-15 19:36:40,724 - services - INFO - Extracted rating: 1808
+2025-06-15 19:36:40,727 - main - INFO - Complete FIDE data for Tanvir Alam: {'fide_id': 10253556, 'name': 'Tanvir, Alam', 'country': None, 'standard_rating': 1895, 'rapid_rating': 1964, 'blitz_rating': 1808}
+2025-06-15 19:36:40,728 - main - INFO - Got FIDE rapid rating for player Tanvir Alam: 1964
+2025-06-15 19:36:40,730 - main - INFO - Successfully updated FIDE rating for player Tanvir Alam from 1964.0 to 1964
+2025-06-15 19:36:40,731 - main - INFO - Successfully updated FIDE rating in database: 1964.0
+2025-06-15 19:36:40,731 - main - INFO - Refreshing Chess.com rating for player Tanvir Alam
+2025-06-15 19:36:42,400 - main - INFO - Refreshing Lichess rating for player Tanvir Alam
+2025-06-15 19:37:13,247 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=1783.0, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:37:13,249 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:37:13,249 - main - INFO - Player Akib Hassan ratings: FIDE=1685.0, Chess.com=2028.0, Lichess=1520.0
+2025-06-15 19:37:13,250 - main - INFO - Player Tanvir Alam ratings: FIDE=1964.0, Chess.com=2166.0, Lichess=2213.0
+2025-06-15 19:37:17,335 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=1783.0, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:37:17,335 - main - INFO - Refreshing FIDE rating for player Md Ahsanul Haque Emon
+2025-06-15 19:37:17,335 - main - INFO - Fetching FIDE rating for player Md Ahsanul Haque Emon with FIDE ID 10279083
+2025-06-15 19:37:17,336 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10279083
+2025-06-15 19:37:18,991 - services - INFO - Found 3 game type sections
+2025-06-15 19:37:18,991 - services - INFO - Game type 1 rating text: '1604'
+2025-06-15 19:37:18,992 - services - INFO - Extracted rating: 1604
+2025-06-15 19:37:18,992 - services - INFO - Game type 2 rating text: '1783'
+2025-06-15 19:37:18,992 - services - INFO - Extracted rating: 1783
+2025-06-15 19:37:18,992 - services - INFO - Game type 3 rating text: '1593'
+2025-06-15 19:37:18,993 - services - INFO - Extracted rating: 1593
+2025-06-15 19:37:18,994 - main - INFO - Complete FIDE data for Md Ahsanul Haque Emon: {'fide_id': 10279083, 'name': 'Md. Ahsanul Haque Emon', 'country': None, 'standard_rating': 1604, 'rapid_rating': 1783, 'blitz_rating': 1593}
+2025-06-15 19:37:18,995 - main - INFO - Got FIDE rapid rating for player Md Ahsanul Haque Emon: 1783
+2025-06-15 19:37:18,996 - main - INFO - Successfully updated FIDE rating for player Md Ahsanul Haque Emon from 1783.0 to 1783
+2025-06-15 19:37:18,996 - main - INFO - Successfully updated FIDE rating in database: 1783.0
+2025-06-15 19:37:18,997 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:37:18,997 - main - INFO - Refreshing FIDE rating for player Lokman Sharif
+2025-06-15 19:37:18,998 - main - INFO - Fetching FIDE rating for player Lokman Sharif with FIDE ID 10297677
+2025-06-15 19:37:18,998 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10297677
+2025-06-15 19:37:19,968 - services - INFO - Found 3 game type sections
+2025-06-15 19:37:19,969 - services - INFO - Game type 1 rating text: 'Not rated'
+2025-06-15 19:37:19,969 - services - WARNING - No numeric rating found in: Not rated
+2025-06-15 19:37:19,969 - services - INFO - Game type 2 rating text: '1560'
+2025-06-15 19:37:19,969 - services - INFO - Extracted rating: 1560
+2025-06-15 19:37:19,969 - services - INFO - Game type 3 rating text: 'Not rated'
+2025-06-15 19:37:19,969 - services - WARNING - No numeric rating found in: Not rated
+2025-06-15 19:37:19,971 - main - INFO - Complete FIDE data for Lokman Sharif: {'fide_id': 10297677, 'name': 'Lokman, Sharif', 'country': None, 'standard_rating': None, 'rapid_rating': 1560, 'blitz_rating': None}
+2025-06-15 19:37:19,971 - main - INFO - Got FIDE rapid rating for player Lokman Sharif: 1560
+2025-06-15 19:37:19,973 - main - INFO - Successfully updated FIDE rating for player Lokman Sharif from 1560.0 to 1560
+2025-06-15 19:37:19,973 - main - INFO - Successfully updated FIDE rating in database: 1560.0
+2025-06-15 19:37:19,973 - main - INFO - Refreshing Chess.com rating for player Lokman Sharif
+2025-06-15 19:37:20,571 - main - INFO - Refreshing Lichess rating for player Lokman Sharif
+2025-06-15 19:37:21,146 - main - INFO - Player Akib Hassan ratings: FIDE=1685.0, Chess.com=2028.0, Lichess=1520.0
+2025-06-15 19:37:21,146 - main - INFO - Refreshing FIDE rating for player Akib Hassan
+2025-06-15 19:37:21,147 - main - INFO - Fetching FIDE rating for player Akib Hassan with FIDE ID 10265880
+2025-06-15 19:37:21,147 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10265880
+2025-06-15 19:37:22,183 - services - INFO - Found 3 game type sections
+2025-06-15 19:37:22,183 - services - INFO - Game type 1 rating text: 'Not rated'
+2025-06-15 19:37:22,184 - services - WARNING - No numeric rating found in: Not rated
+2025-06-15 19:37:22,184 - services - INFO - Game type 2 rating text: '1685'
+2025-06-15 19:37:22,184 - services - INFO - Extracted rating: 1685
+2025-06-15 19:37:22,185 - services - INFO - Game type 3 rating text: '1707'
+2025-06-15 19:37:22,185 - services - INFO - Extracted rating: 1707
+2025-06-15 19:37:22,186 - main - INFO - Complete FIDE data for Akib Hassan: {'fide_id': 10265880, 'name': 'Akib, Hassan', 'country': None, 'standard_rating': None, 'rapid_rating': 1685, 'blitz_rating': 1707}
+2025-06-15 19:37:22,186 - main - INFO - Got FIDE rapid rating for player Akib Hassan: 1685
+2025-06-15 19:37:22,188 - main - INFO - Successfully updated FIDE rating for player Akib Hassan from 1685.0 to 1685
+2025-06-15 19:37:22,188 - main - INFO - Successfully updated FIDE rating in database: 1685.0
+2025-06-15 19:37:22,188 - main - INFO - Refreshing Chess.com rating for player Akib Hassan
+2025-06-15 19:37:23,394 - main - INFO - Refreshing Lichess rating for player Akib Hassan
+2025-06-15 19:37:23,945 - main - INFO - Player Tanvir Alam ratings: FIDE=1964.0, Chess.com=2166.0, Lichess=2213.0
+2025-06-15 19:37:23,945 - main - INFO - Refreshing FIDE rating for player Tanvir Alam
+2025-06-15 19:37:23,945 - main - INFO - Fetching FIDE rating for player Tanvir Alam with FIDE ID 10253556
+2025-06-15 19:37:23,946 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10253556
+2025-06-15 19:37:25,008 - services - INFO - Found 3 game type sections
+2025-06-15 19:37:25,008 - services - INFO - Game type 1 rating text: '1895'
+2025-06-15 19:37:25,009 - services - INFO - Extracted rating: 1895
+2025-06-15 19:37:25,009 - services - INFO - Game type 2 rating text: '1964'
+2025-06-15 19:37:25,009 - services - INFO - Extracted rating: 1964
+2025-06-15 19:37:25,009 - services - INFO - Game type 3 rating text: '1808'
+2025-06-15 19:37:25,009 - services - INFO - Extracted rating: 1808
+2025-06-15 19:37:25,012 - main - INFO - Complete FIDE data for Tanvir Alam: {'fide_id': 10253556, 'name': 'Tanvir, Alam', 'country': None, 'standard_rating': 1895, 'rapid_rating': 1964, 'blitz_rating': 1808}
+2025-06-15 19:37:25,012 - main - INFO - Got FIDE rapid rating for player Tanvir Alam: 1964
+2025-06-15 19:37:25,014 - main - INFO - Successfully updated FIDE rating for player Tanvir Alam from 1964.0 to 1964
+2025-06-15 19:37:25,014 - main - INFO - Successfully updated FIDE rating in database: 1964.0
+2025-06-15 19:37:25,014 - main - INFO - Refreshing Chess.com rating for player Tanvir Alam
+2025-06-15 19:37:26,158 - main - INFO - Refreshing Lichess rating for player Tanvir Alam
+2025-06-15 19:38:47,454 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=1783.0, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:38:47,455 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:38:47,455 - main - INFO - Player Akib Hassan ratings: FIDE=1685.0, Chess.com=2028.0, Lichess=1520.0
+2025-06-15 19:38:47,455 - main - INFO - Player Tanvir Alam ratings: FIDE=1964.0, Chess.com=2166.0, Lichess=2213.0
+2025-06-15 19:41:12,618 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=1783.0, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:41:12,619 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:41:12,619 - main - INFO - Player Akib Hassan ratings: FIDE=1685.0, Chess.com=2028.0, Lichess=1520.0
+2025-06-15 19:41:12,619 - main - INFO - Player Tanvir Alam ratings: FIDE=1964.0, Chess.com=2166.0, Lichess=2213.0
+2025-06-15 19:41:14,490 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=1783.0, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:41:14,490 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:41:14,490 - main - INFO - Player Akib Hassan ratings: FIDE=1685.0, Chess.com=2028.0, Lichess=1520.0
+2025-06-15 19:41:14,491 - main - INFO - Player Tanvir Alam ratings: FIDE=1964.0, Chess.com=2166.0, Lichess=2213.0
+2025-06-15 19:41:15,198 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=1783.0, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:41:15,200 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:41:15,200 - main - INFO - Player Akib Hassan ratings: FIDE=1685.0, Chess.com=2028.0, Lichess=1520.0
+2025-06-15 19:41:15,200 - main - INFO - Player Tanvir Alam ratings: FIDE=1964.0, Chess.com=2166.0, Lichess=2213.0
+2025-06-15 19:41:22,410 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=1783.0, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:41:22,410 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:41:22,410 - main - INFO - Player Akib Hassan ratings: FIDE=1685.0, Chess.com=2028.0, Lichess=1520.0
+2025-06-15 19:41:22,411 - main - INFO - Player Tanvir Alam ratings: FIDE=1964.0, Chess.com=2166.0, Lichess=2213.0
+2025-06-15 19:42:24,875 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=1783.0, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:42:24,875 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:42:24,875 - main - INFO - Player Akib Hassan ratings: FIDE=1685.0, Chess.com=2028.0, Lichess=1520.0
+2025-06-15 19:42:24,875 - main - INFO - Player Tanvir Alam ratings: FIDE=1964.0, Chess.com=2166.0, Lichess=2213.0
+2025-06-15 19:42:49,974 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=1783.0, Chess.com=2029.0, Lichess=2087.0
+2025-06-15 19:42:49,975 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-15 19:42:49,975 - main - INFO - Player Akib Hassan ratings: FIDE=1685.0, Chess.com=2028.0, Lichess=1520.0
+2025-06-15 19:42:49,976 - main - INFO - Player Tanvir Alam ratings: FIDE=1964.0, Chess.com=2166.0, Lichess=2213.0

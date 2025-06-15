@@ -4,17 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess Ratings Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">    <style>
+        /* Core Variables */
         :root {
-            --primary-color: #1a237e;
-            --secondary-color: #283593;
-            --accent-color: #3949ab;
-            --background-color: #f5f5f5;
-            --text-color: #333;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --background-color: #f5f7fa;
+            --text-color: #2c3e50;
+            --card-shadow: 0 8px 16px rgb            tbody.innerHTML = `
+                  tbody.innerHTML = `
+                    <tr class="empty-state">
+                        <td colspan="7">
+                            <div style="opacity: 0.7; margin-bottom: 1rem;">👥</div>
+                            No players found. Please add players using the form above.
+                        </td>
+                    </tr>
+                `;       <tr>
+                    <td colspan="7" class="loading">
+                        <div class="loading-spinner"></div>
+                        <div style="color: var(--secondary-color); font-size: 1.1rem;">Loading ratings...</div>
+                    </td>
+                </tr>
+            `;0, 0.1);
+            --success-color: #27ae60;
+            --error-color: #e74c3c;
+            --warning-color: #f1c40f;
+            --border-radius: 12px;
         }
 
+        /* Base Styles */
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
@@ -25,322 +44,505 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .header h1 {
-            color: var(--primary-color);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .header p {
-            color: var(--text-color);
-            font-size: 1.1rem;
-            opacity: 0.8;
+        /* Modern Table Styles */
+        .ratings-table-container {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            margin-top: 2rem;
+            overflow: auto;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .ratings-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
+            background: transparent;
+            min-width: 800px;
         }
 
         .ratings-table th {
-            background: var(--secondary-color);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
             color: white;
-            padding: 1rem;
+            padding: 1.2rem 1.5rem;
             text-align: left;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .ratings-table th:first-child {
+            border-top-left-radius: var(--border-radius);
+            padding-left: 2rem;
+        }
+
+        .ratings-table th:last-child {
+            border-top-right-radius: var(--border-radius);
+            padding-right: 2rem;
         }
 
         .ratings-table td {
-            padding: 1rem;
-            border-bottom: 1px solid #eee;
+            padding: 1.2rem 1.5rem;
+            background: white;
+            transition: all 0.3s ease;
+            font-size: 1.05rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        .ratings-table tr:last-child td {
-            border-bottom: none;
+        .ratings-table td:first-child {
+            padding-left: 2rem;
+            font-weight: 500;
         }
 
-        .ratings-table tr:hover {
-            background-color: #f8f9fa;
+        .ratings-table td:last-child {
+            padding-right: 2rem;
+        }
+
+        .ratings-table tr {
+            transition: all 0.3s ease;
+        }
+
+        .ratings-table tr:hover td {
+            background: #f8f9fa;
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .rating-cell {
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-align: center;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+            padding: 0.8rem !important;
             color: var(--accent-color);
+            position: relative;
+            overflow: hidden;
         }
 
+        .rating-cell::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: currentColor;
+            opacity: 0.1;
+            z-index: -1;
+            border-radius: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .ratings-table tr:hover .rating-cell::before {
+            opacity: 0.15;
+        }
+
+        .update-button {
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(52, 152, 219, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .update-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+            background: linear-gradient(135deg, #2980b9 0%, var(--accent-color) 100%);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            max-width: 500px;
+            margin: 10% auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        #adminPassword {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        #adminLoginButton,
+        #adminCancelButton {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+        }
+
+        #adminLoginButton {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        #adminCancelButton {
+            background: #e74c3c;
+            color: white;
+        }
+
+        /* Loading State */
         .loading {
             text-align: center;
-            padding: 2rem;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: var(--border-radius);
         }
 
         .loading-spinner {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(0, 0, 0, 0.1);
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(52, 152, 219, 0.1);
             border-radius: 50%;
-            border-top-color: var(--primary-color);
+            border-top-color: var(--accent-color);
             animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 1rem;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        .error-message {
-            background-color: #ffebee;
-            color: #c62828;
-            padding: 1rem;
-            border-radius: 5px;
-            margin: 1rem 0;
+        /* Empty State */
+        .ratings-table tr.empty-state td {
             text-align: center;
+            padding: 3rem;
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.9);
         }
 
-        .success-message {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            padding: 1rem;
-            border-radius: 5px;
-            margin: 1rem 0;
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .ratings-table-container {
+                padding: 1rem;
+                margin: 1rem -1rem;
+                border-radius: 0;
+            }
+
+            .ratings-table th,
+            .ratings-table td {
+                padding: 1rem;
+            }
+
+            .rating-cell {
+                padding: 0.6rem !important;
+                font-size: 1rem;
+            }
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }        .header {
             text-align: center;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .header p {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            margin: 0;
         }
 
         .filter-section {
-            margin-bottom: 2rem;
             display: flex;
-            gap: 1rem;
+            justify-content: space-between;
             align-items: center;
-            justify-content: flex-end;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .search-input {
-            padding: 0.5rem 1rem;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius);
             font-size: 1rem;
-            width: 250px;
+            transition: all 0.3s ease;
+            min-width: 250px;
         }
 
         .search-input:focus {
             outline: none;
             border-color: var(--accent-color);
-        }
-
-        .refresh-button {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s;
-        }
-
-        .refresh-button:hover {
-            background-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
 
         .admin-toggle-button {
-            background-color: #007bff;
+            padding: 0.8rem 1.5rem;
+            background: var(--primary-color);
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
+            border-radius: var(--border-radius);
             font-size: 1rem;
-            transition: background-color 0.3s;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .admin-toggle-button:hover {
-            background-color: #0056b3;
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .admin-toggle-button.active {
+            background: var(--success-color);
         }
 
         .admin-section {
-            display: none;  /* Hide by default */
             background: white;
+            border-radius: var(--border-radius);
             padding: 2rem;
-            border-radius: 10px;
             margin-bottom: 2rem;
             box-shadow: var(--card-shadow);
+            display: none;
         }
 
         .admin-mode .admin-section {
-            display: block;  /* Show when admin mode is active */
-        }
-
-        .admin-section h2 {
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
+            display: block;
         }
 
         .admin-form {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
+            margin-top: 1rem;
         }
 
         .form-group {
-            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
         }
 
         .form-group input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+            padding: 0.8rem;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius);
             font-size: 1rem;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
         }
 
         .form-group input:focus {
             outline: none;
             border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
 
         .admin-button {
-            grid-column: span 2;
-            background-color: var(--primary-color);
+            padding: 0.8rem 1.5rem;
+            background: var(--accent-color);
             color: white;
             border: none;
-            padding: 0.75rem;
-            border-radius: 5px;
+            border-radius: var(--border-radius);
             font-size: 1rem;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
         }
 
         .admin-button:hover {
-            background-color: var(--secondary-color);
+            background: #2980b9;
+            transform: translateY(-2px);
         }
 
-        .delete-button {
-            background-color: #dc3545;
+        .update-button {
+            padding: 0.5rem 1rem;
+            background: var(--accent-color);
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
+            border-radius: var(--border-radius);
             font-size: 0.9rem;
-            transition: background-color 0.3s;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .delete-button:hover {
-            background-color: #c82333;
+        .update-button:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
         }
 
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
-            z-index: 1000;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
         }
 
         .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
             max-width: 500px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 10% auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .modal h2 {
-            margin-top: 0;
             color: var(--primary-color);
+            margin-bottom: 1.5rem;
         }
 
-        .modal input {
+        #adminPassword {
             width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
+            padding: 0.8rem;
             margin-bottom: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
         }
 
-        .modal button {
-            width: 100%;
-            padding: 0.75rem;
+        #adminLoginButton,
+        #adminCancelButton {
+            padding: 0.8rem 1.5rem;
             border: none;
-            border-radius: 5px;
+            border-radius: var(--border-radius);
             font-size: 1rem;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
         }
 
         #adminLoginButton {
-            background-color: var(--primary-color);
+            background: var(--accent-color);
             color: white;
-        }
-
-        #adminLoginButton:hover {
-            background-color: var(--secondary-color);
         }
 
         #adminCancelButton {
-            background-color: #dc3545;
+            background: #e74c3c;
             color: white;
-        }
-
-        #adminCancelButton:hover {
-            background-color: #c82333;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
+    <div class="container">        <div class="header">
+            <img src="/static/New%20logo%20DUCC%20without%20bg.png" alt="DUCC Logo" style="height: 100px; margin-bottom: 1rem;">
             <h1>DUCC Ratings</h1>
             <p>Track chess ratings across multiple platforms</p>
-        </div>
-        <div class="filter-section">
+        </div><div class="filter-section">
             <input type="text"
                    class="search-input"
                    id="searchInput"
                    placeholder="Search by name...">
-            <button class="refresh-button" id="refreshButton">
-                Refresh Ratings
-            </button>
-            <button class="admin-toggle-button" id="adminModeButton">
-                Toggle Admin Mode
-            </button>
+            <div class="admin-controls">
+                <button class="admin-toggle-button" id="adminModeButton">Enter Admin Mode</button>
+                <button class="admin-button" id="refreshButton" style="margin: 0;">Refresh Ratings</button>
+            </div>
         </div>
 
         <div id="adminAuthModal" class="modal">
             <div class="modal-content">
                 <h2>Admin Authentication</h2>
+                <p style="margin-bottom: 1rem; color: var(--secondary-color);">Enter the admin password to manage players and ratings.</p>
                 <input type="password" id="adminPassword" placeholder="Enter admin password">
-                <button id="adminLoginButton">Login</button>
-                <button id="adminCancelButton">Cancel</button>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button id="adminLoginButton">Login</button>
+                    <button id="adminCancelButton">Cancel</button>
+                </div>
             </div>
         </div>
 
         <div class="admin-section">
-            <h2>Register Player</h2>
+            <h2>Register New Player</h2>
+            <p style="color: var(--secondary-color); margin-bottom: 1rem;">Add a new player to the ratings dashboard.</p>
             <form id="addPlayerForm" class="admin-form">
                 <div class="form-group">
                     <input type="text" id="playerName" placeholder="Player Name" required>
@@ -354,24 +556,56 @@
                 <div class="form-group">
                     <input type="text" id="lichessUsername" placeholder="Lichess Username">
                 </div>
-                <button type="submit" class="admin-button">Add Player</button>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <button type="submit" class="admin-button">Register Player</button>
+                </div>
             </form>
+        </div>        <div id="updatePlayerModal" class="modal">
+            <div class="modal-content">
+                <h2>Update Player</h2>
+                <p style="margin-bottom: 1.5rem; color: var(--secondary-color);">Update player information and usernames</p>
+                <form id="updatePlayerForm" class="admin-form">
+                    <input type="hidden" id="updatePlayerId">
+                    <div class="form-group">
+                        <input type="text" id="updatePlayerName" placeholder="Player Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" id="updateFideId" placeholder="FIDE ID">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="updateChesscomUsername" placeholder="Chess.com Username">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="updateLichessUsername" placeholder="Lichess Username">
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <div style="display: flex; gap: 1rem;">
+                            <button type="submit" class="admin-button" style="flex: 2;">Update Player</button>
+                            <button type="button" id="updateCancelButton" class="admin-button" style="flex: 1; background-color: #e74c3c;">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>        <div class="ratings-table-container">
+            <table class="ratings-table">
+                <thead>
+                    <tr>
+                        <th width="60">#</th>
+                        <th>Player Name</th>
+                        <th width="120">FIDE ID</th>
+                        <th width="140">FIDE Rapid</th>
+                        <th width="140">Chess.com</th>
+                        <th width="140">Lichess</th>
+                        <th id="actionsHeader" width="120" style="display: none;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ratingsBody">
+                    <!-- Loading state will be inserted here -->
+                </tbody>
+            </table>
         </div>
-
-        <table class="ratings-table">            <thead>                <tr>
-                    <th>Name</th>
-                    <th>FIDE ID</th>
-                    <th>FIDE Rapid</th>
-                    <th>Chess.com Rapid</th>
-                    <th>Lichess Rapid</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="ratingsBody">
-                <!-- Ratings data will be inserted here -->
-            </tbody>
-        </table>
     </div>    <script>
+        // Configuration
         const API_URL = window.location.hostname === 'localhost' 
             ? 'http://localhost:8000' 
             : window.location.origin;
@@ -379,10 +613,12 @@
         let isAdmin = false;
         const ADMIN_PASSWORD = 'admin123'; // In a real app, this would be handled securely on the backend
 
-        async function fetchRatings() {
-            const tbody = document.getElementById('ratingsBody');            tbody.innerHTML = `
+        // Function Declarations
+        async function fetchRatings(refresh = false) {
+            const tbody = document.getElementById('ratingsBody');
+            tbody.innerHTML = `
                 <tr>
-                    <td colspan="6" class="loading">
+                    <td colspan="7" class="loading">
                         <div class="loading-spinner"></div>
                         <div>Loading ratings...</div>
                     </td>
@@ -390,12 +626,15 @@
             `;
             
             try {
-                const response = await fetch(`${API_URL}/players/ratings/`);
+                const response = await fetch(`${API_URL}/players/ratings/?refresh=${refresh}`);
                 const data = await response.json();
                 players = data;
                 displayRatings(players);
+                if (refresh) {
+                    showSuccess('Ratings refreshed successfully');
+                }
             } catch (error) {
-                showError('Failed to fetch ratings. Please try again later.');
+                showError(refresh ? 'Failed to refresh ratings.' : 'Failed to fetch ratings.');
                 console.error('Error:', error);
             }
         }
@@ -407,7 +646,7 @@
             if (playersData.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="6" style="text-align: center;">
+                        <td colspan="7" style="text-align: center;">
                             No players found. Please add players using the form above.
                         </td>
                     </tr>
@@ -423,22 +662,33 @@
 
             playersData.forEach(player => {
                 const row = document.createElement('tr');
-                const fideRating = player.fide_rating !== "-" ? player.fide_rating : "No rating";
-                const chesscomRating = player.chesscom_rating !== "-" ? player.chesscom_rating : "No rating";
-                const lichessRating = player.lichess_rating !== "-" ? player.lichess_rating : "No rating";
+                
+                const formatRating = (rating, type) => {
+                    if (rating === "-") return "No rating";
+                    if (type === "FIDE" && !rating) return "No rapid rating";
+                    return rating || "No rating";
+                };
+                
+                const fideRating = formatRating(player.fide_rating, "FIDE");
+                const chesscomRating = formatRating(player.chesscom_rating, "Chess.com");
+                const lichessRating = formatRating(player.lichess_rating, "Lichess");
                 
                 row.innerHTML = `
+                    <td>${player.id}</td>
                     <td>${player.name}</td>
-                    <td>${player.fide_id}</td>
+                    <td>${player.fide_id || ''}</td>
                     <td class="rating-cell">${fideRating}</td>
                     <td class="rating-cell">${chesscomRating}</td>
                     <td class="rating-cell">${lichessRating}</td>
-                    <td>
-                        ${isAdmin ? `<button class="delete-button" onclick="deletePlayer('${player.name}')">Delete</button>` : ''}
-                    </td>
+                    ${isAdmin ? `<td>
+                        <button class="update-button" onclick="updatePlayer(${player.id})">Update</button>
+                    </td>` : ''}
                 `;
                 tbody.appendChild(row);
             });
+
+            // Show/hide actions column header based on admin mode
+            document.getElementById('actionsHeader').style.display = isAdmin ? 'table-cell' : 'none';
         }
 
         function showError(message) {
@@ -447,7 +697,7 @@
             errorDiv.textContent = message;
 
             const container = document.querySelector('.container');
-            container.insertBefore(errorDiv, document.querySelector('.ratings-table'));
+            container.insertBefore(errorDiv, document.querySelector('.ratings-table-container'));
 
             setTimeout(() => {
                 errorDiv.remove();
@@ -460,30 +710,79 @@
             successDiv.textContent = message;
 
             const container = document.querySelector('.container');
-            container.insertBefore(successDiv, document.querySelector('.ratings-table'));
+            container.insertBefore(successDiv, document.querySelector('.ratings-table-container'));
 
             setTimeout(() => {
                 successDiv.remove();
             }, 5000);
-        }        function filterPlayers(searchTerm) {
+        }
+
+        function filterPlayers(searchTerm) {
             const filtered = players.filter(player =>
                 player.name.toLowerCase().includes(searchTerm.toLowerCase())
             );
             displayRatings(filtered);
         }
 
-        async function deletePlayer(playerName) {
+        // Admin Functions
+        function showAdminModal() {
+            document.getElementById('adminAuthModal').style.display = 'block';
+            document.getElementById('adminPassword').focus();
+        }
+
+        function hideAdminModal() {
+            document.getElementById('adminAuthModal').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        function enableAdminMode() {
+            isAdmin = true;
+            const adminButton = document.getElementById('adminModeButton');
+            adminButton.textContent = 'Exit Admin Mode';
+            adminButton.classList.add('active');
+            document.querySelector('.container').classList.add('admin-mode');
+            showSuccess('Admin mode enabled');
+            displayRatings(players);
+        }
+
+        function disableAdminMode() {
+            isAdmin = false;
+            const adminButton = document.getElementById('adminModeButton');
+            adminButton.textContent = 'Enter Admin Mode';
+            adminButton.classList.remove('active');
+            document.querySelector('.container').classList.remove('admin-mode');
+            showSuccess('Admin mode disabled');
+            displayRatings(players);
+        }
+
+        function handleAdminAuth() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                enableAdminMode();
+                hideAdminModal();
+            } else {
+                showError('Invalid admin password');
+            }
+        }
+
+        async function deletePlayer(playerId) {
             if (!isAdmin) {
                 showError('You must be an admin to delete players');
                 return;
             }
 
-            if (!confirm(`Are you sure you want to delete ${playerName}?`)) {
+            const player = players.find(p => p.id === playerId);
+            if (!player) {
+                showError('Player not found');
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to delete ${player.name}?`)) {
                 return;
             }
             
             try {
-                const response = await fetch(`${API_URL}/players/delete/${encodeURIComponent(playerName)}`, {
+                const response = await fetch(`${API_URL}/players/delete/${playerId}`, {
                     method: 'DELETE'
                 });
 
@@ -492,7 +791,7 @@
                     throw new Error(error.detail || 'Failed to delete player');
                 }
 
-                showSuccess(`Player ${playerName} deleted successfully`);
+                showSuccess(`Player ${player.name} deleted successfully`);
                 await fetchRatings();
             } catch (error) {
                 showError(error.message);
@@ -500,101 +799,143 @@
             }
         }
 
-        // Admin Authentication
-        function showAdminModal() {
-            document.getElementById('adminAuthModal').style.display = 'block';
-        }
-
-        function hideAdminModal() {
-            document.getElementById('adminAuthModal').style.display = 'none';
-            document.getElementById('adminPassword').value = '';
-        }
-
-        function handleAdminAuth() {
-            const password = document.getElementById('adminPassword').value;
-            if (password === ADMIN_PASSWORD) {
-                isAdmin = true;
-                document.getElementById('adminModeButton').textContent = 'Admin Mode: ON';
-                document.getElementById('adminModeButton').classList.add('active');
-                document.querySelector('.container').classList.add('admin-mode');
-                hideAdminModal();
-                displayRatings(players);
-                showSuccess('Admin mode activated');
-            } else {
-                showError('Invalid password');
-            }
-        }
-
-        function toggleAdminMode() {
-            if (isAdmin) {
-                isAdmin = false;
-                document.getElementById('adminModeButton').textContent = 'Toggle Admin Mode';
-                document.getElementById('adminModeButton').classList.remove('active');
-                document.querySelector('.container').classList.remove('admin-mode');
-                displayRatings(players);
-            } else {
-                showAdminModal();
-            }
-        }
-
-        // Event Listeners
-        document.getElementById('adminModeButton').addEventListener('click', toggleAdminMode);
-        document.getElementById('adminLoginButton').addEventListener('click', handleAdminAuth);
-        document.getElementById('adminCancelButton').addEventListener('click', hideAdminModal);
-        document.getElementById('adminPassword').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                handleAdminAuth();
-            }
-        });
-
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            filterPlayers(e.target.value);
-        });
-
-        document.getElementById('refreshButton').addEventListener('click', () => {
-            fetchRatings();
-        });
-
-        document.getElementById('addPlayerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            if (!isAdmin) {
-                showError('You must be an admin to add players');
+        function updatePlayer(playerId) {
+            const player = players.find(p => p.id === playerId);
+            if (!player) {
+                showError('Player not found');
                 return;
             }
-            
-            const playerData = {
-                name: document.getElementById('playerName').value,
-                fide_id: document.getElementById('fideId').value ? parseInt(document.getElementById('fideId').value) : null,
-                chesscom_username: document.getElementById('chesscomUsername').value || null,
-                lichess_username: document.getElementById('lichessUsername').value || null
-            };
+            showUpdateModal(player);
+        }
 
-            try {
-                const response = await fetch(`${API_URL}/players/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(playerData)
-                });
+        function showUpdateModal(player) {
+            document.getElementById('updatePlayerId').value = player.id;
+            document.getElementById('updatePlayerName').value = player.name;
+            document.getElementById('updateFideId').value = player.fide_id || '';
+            document.getElementById('updateChesscomUsername').value = player.chesscom_username || '';
+            document.getElementById('updateLichessUsername').value = player.lichess_username || '';
+            document.getElementById('updatePlayerModal').style.display = 'block';
+        }
 
-                if (!response.ok) {
-                    const error = await response.json();
-                    throw new Error(error.detail || 'Failed to add player');
+        function hideUpdateModal() {
+            document.getElementById('updatePlayerModal').style.display = 'none';
+            document.getElementById('updatePlayerForm').reset();
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchRatings();
+
+            // Admin Authentication
+            const adminModeButton = document.getElementById('adminModeButton');
+            adminModeButton.addEventListener('click', function() {
+                if (isAdmin) {
+                    disableAdminMode();
+                } else {
+                    showAdminModal();
+                }
+            });
+
+            document.getElementById('adminLoginButton').addEventListener('click', handleAdminAuth);
+            document.getElementById('adminCancelButton').addEventListener('click', hideAdminModal);
+            document.getElementById('adminPassword').addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    handleAdminAuth();
+                }
+                if (event.key === 'Escape') {
+                    hideAdminModal();
+                }
+            });
+
+            // Refresh Ratings
+            document.getElementById('refreshButton').addEventListener('click', () => fetchRatings(true));
+
+            // Search
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                filterPlayers(e.target.value);
+            });
+
+            // Player Forms
+            document.getElementById('addPlayerForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                if (!isAdmin) {
+                    showError('You must be in admin mode to add players');
+                    return;
                 }
 
-                showSuccess('Player added successfully');
-                e.target.reset();
-                await fetchRatings();
-            } catch (error) {
-                showError(error.message);
-                console.error('Error:', error);
-            }
-        });
+                const formData = {
+                    name: document.getElementById('playerName').value.trim(),
+                    fide_id: document.getElementById('fideId').value ? parseInt(document.getElementById('fideId').value) : null,
+                    chesscom_username: document.getElementById('chesscomUsername').value.trim() || null,
+                    lichess_username: document.getElementById('lichessUsername').value.trim() || null
+                };
 
-        // Initial load
-        fetchRatings();
+                try {
+                    const response = await fetch(`${API_URL}/players/create`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.detail || 'Failed to add player');
+                    }
+
+                    showSuccess('Player added successfully');
+                    e.target.reset();
+                    await fetchRatings();
+                } catch (error) {
+                    showError(error.message);
+                    console.error('Error:', error);
+                }
+            });
+
+            document.getElementById('updatePlayerForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                if (!isAdmin) {
+                    showError('You must be in admin mode to update players');
+                    return;
+                }
+
+                const playerId = document.getElementById('updatePlayerId').value;
+                if (!playerId) {
+                    showError('Invalid player ID');
+                    return;
+                }
+
+                const formData = {
+                    name: document.getElementById('updatePlayerName').value.trim(),
+                    fide_id: document.getElementById('updateFideId').value ? parseInt(document.getElementById('updateFideId').value) : null,
+                    chesscom_username: document.getElementById('updateChesscomUsername').value.trim() || null,
+                    lichess_username: document.getElementById('updateLichessUsername').value.trim() || null
+                };
+
+                try {
+                    const response = await fetch(`${API_URL}/players/${playerId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.detail || 'Failed to update player');
+                    }
+
+                    showSuccess('Player updated successfully');
+                    hideUpdateModal();
+                    await fetchRatings(true);
+                } catch (error) {
+                    showError(error.message);
+                    console.error('Error:', error);
+                }
+            });
+
+            document.getElementById('updateCancelButton').addEventListener('click', hideUpdateModal);
+        });
     </script>
 </body>
 </html>

@@ -192,3 +192,95 @@
 2025-06-12 13:50:24,057 - services - INFO - Game type 3 rating text: '1623'
 2025-06-12 13:50:24,057 - services - INFO - Extracted rating: 1623
 2025-06-12 13:50:24,060 - main - INFO - Found FIDE rapid rating 1646 for player Ragib Shahriar
+2025-06-12 18:31:13,540 - main - INFO - Fetching FIDE rating for player nafis with ID 10297677
+2025-06-12 18:31:13,542 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10297677
+2025-06-12 18:31:16,393 - services - INFO - Found 3 game type sections
+2025-06-12 18:31:16,394 - services - INFO - Game type 1 rating text: 'Not rated'
+2025-06-12 18:31:16,394 - services - WARNING - No numeric rating found in: Not rated
+2025-06-12 18:31:16,394 - services - INFO - Game type 2 rating text: '1560'
+2025-06-12 18:31:16,395 - services - INFO - Extracted rating: 1560
+2025-06-12 18:31:16,395 - services - INFO - Game type 3 rating text: 'Not rated'
+2025-06-12 18:31:16,395 - services - WARNING - No numeric rating found in: Not rated
+2025-06-12 18:31:16,396 - main - INFO - Found FIDE rapid rating 1560 for player nafis
+2025-06-12 18:31:16,396 - main - INFO - Fetching Chess.com rating for player nafis
+2025-06-12 18:31:17,733 - main - INFO - Fetching Lichess rating for player nafis
+2025-06-12 18:31:18,314 - main - INFO - Fetching FIDE rating for player Md Ahsanul Haque Emon with ID 10279083
+2025-06-12 18:31:18,314 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10279083
+2025-06-12 18:31:21,795 - services - INFO - Found 3 game type sections
+2025-06-12 18:31:21,795 - services - INFO - Game type 1 rating text: '1604'
+2025-06-12 18:31:21,796 - services - INFO - Extracted rating: 1604
+2025-06-12 18:31:21,796 - services - INFO - Game type 2 rating text: '1783'
+2025-06-12 18:31:21,796 - services - INFO - Extracted rating: 1783
+2025-06-12 18:31:21,796 - services - INFO - Game type 3 rating text: '1593'
+2025-06-12 18:31:21,797 - services - INFO - Extracted rating: 1593
+2025-06-12 18:31:21,798 - main - INFO - Found FIDE rapid rating 1783 for player Md Ahsanul Haque Emon
+2025-06-12 18:31:21,798 - main - INFO - Fetching Chess.com rating for player Md Ahsanul Haque Emon
+2025-06-12 18:31:24,998 - main - INFO - Fetching Lichess rating for player Md Ahsanul Haque Emon
+2025-06-12 18:31:26,040 - main - INFO - Fetching FIDE rating for player Tanvir Alam with ID 10253556
+2025-06-12 18:31:26,042 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10253556
+2025-06-12 18:31:27,558 - services - INFO - Found 3 game type sections
+2025-06-12 18:31:27,559 - services - INFO - Game type 1 rating text: '1895'
+2025-06-12 18:31:27,559 - services - INFO - Extracted rating: 1895
+2025-06-12 18:31:27,559 - services - INFO - Game type 2 rating text: '1964'
+2025-06-12 18:31:27,559 - services - INFO - Extracted rating: 1964
+2025-06-12 18:31:27,561 - services - INFO - Game type 3 rating text: '1808'
+2025-06-12 18:31:27,561 - services - INFO - Extracted rating: 1808
+2025-06-12 18:31:27,563 - main - INFO - Found FIDE rapid rating 1964 for player Tanvir Alam
+2025-06-12 18:31:27,564 - main - INFO - Fetching Chess.com rating for player Tanvir Alam
+2025-06-12 18:31:29,728 - main - INFO - Fetching Lichess rating for player Tanvir Alam
+2025-06-12 18:31:30,311 - main - INFO - Fetching FIDE rating for player Ragib Shahriar with ID 10238751
+2025-06-12 18:31:30,311 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10238751
+2025-06-12 18:31:31,484 - services - INFO - Found 3 game type sections
+2025-06-12 18:31:31,484 - services - INFO - Game type 1 rating text: '1515'
+2025-06-12 18:31:31,484 - services - INFO - Extracted rating: 1515
+2025-06-12 18:31:31,484 - services - INFO - Game type 2 rating text: '1646'
+2025-06-12 18:31:31,485 - services - INFO - Extracted rating: 1646
+2025-06-12 18:31:31,485 - services - INFO - Game type 3 rating text: '1623'
+2025-06-12 18:31:31,485 - services - INFO - Extracted rating: 1623
+2025-06-12 18:31:31,487 - main - INFO - Found FIDE rapid rating 1646 for player Ragib Shahriar
+2025-06-12 18:32:48,218 - main - INFO - Fetching FIDE rating for player nafis with ID 10297677
+2025-06-12 18:32:48,218 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10297677
+2025-06-12 18:32:49,678 - services - INFO - Found 3 game type sections
+2025-06-12 18:32:49,678 - services - INFO - Game type 1 rating text: 'Not rated'
+2025-06-12 18:32:49,678 - services - WARNING - No numeric rating found in: Not rated
+2025-06-12 18:32:49,679 - services - INFO - Game type 2 rating text: '1560'
+2025-06-12 18:32:49,679 - services - INFO - Extracted rating: 1560
+2025-06-12 18:32:49,679 - services - INFO - Game type 3 rating text: 'Not rated'
+2025-06-12 18:32:49,679 - services - WARNING - No numeric rating found in: Not rated
+2025-06-12 18:32:49,681 - main - INFO - Found FIDE rapid rating 1560 for player nafis
+2025-06-12 18:32:49,681 - main - INFO - Fetching Chess.com rating for player nafis
+2025-06-12 18:32:50,727 - main - INFO - Fetching Lichess rating for player nafis
+2025-06-12 18:32:51,333 - main - INFO - Fetching FIDE rating for player Md Ahsanul Haque Emon with ID 10279083
+2025-06-12 18:32:51,334 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10279083
+2025-06-12 18:32:53,005 - services - INFO - Found 3 game type sections
+2025-06-12 18:32:53,006 - services - INFO - Game type 1 rating text: '1604'
+2025-06-12 18:32:53,006 - services - INFO - Extracted rating: 1604
+2025-06-12 18:32:53,006 - services - INFO - Game type 2 rating text: '1783'
+2025-06-12 18:32:53,006 - services - INFO - Extracted rating: 1783
+2025-06-12 18:32:53,006 - services - INFO - Game type 3 rating text: '1593'
+2025-06-12 18:32:53,007 - services - INFO - Extracted rating: 1593
+2025-06-12 18:32:53,009 - main - INFO - Found FIDE rapid rating 1783 for player Md Ahsanul Haque Emon
+2025-06-12 18:32:53,009 - main - INFO - Fetching Chess.com rating for player Md Ahsanul Haque Emon
+2025-06-12 18:32:55,285 - main - INFO - Fetching Lichess rating for player Md Ahsanul Haque Emon
+2025-06-12 18:32:57,366 - main - INFO - Fetching FIDE rating for player Tanvir Alam with ID 10253556
+2025-06-12 18:32:57,366 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10253556
+2025-06-12 18:33:01,332 - services - INFO - Found 3 game type sections
+2025-06-12 18:33:01,332 - services - INFO - Game type 1 rating text: '1895'
+2025-06-12 18:33:01,333 - services - INFO - Extracted rating: 1895
+2025-06-12 18:33:01,333 - services - INFO - Game type 2 rating text: '1964'
+2025-06-12 18:33:01,333 - services - INFO - Extracted rating: 1964
+2025-06-12 18:33:01,335 - services - INFO - Game type 3 rating text: '1808'
+2025-06-12 18:33:01,335 - services - INFO - Extracted rating: 1808
+2025-06-12 18:33:01,339 - main - INFO - Found FIDE rapid rating 1964 for player Tanvir Alam
+2025-06-12 18:33:01,339 - main - INFO - Fetching Chess.com rating for player Tanvir Alam
+2025-06-12 18:33:03,725 - main - INFO - Fetching Lichess rating for player Tanvir Alam
+2025-06-12 18:33:05,050 - main - INFO - Fetching FIDE rating for player Ragib Shahriar with ID 10238751
+2025-06-12 18:33:05,051 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10238751
+2025-06-12 18:33:06,445 - services - INFO - Found 3 game type sections
+2025-06-12 18:33:06,445 - services - INFO - Game type 1 rating text: '1515'
+2025-06-12 18:33:06,445 - services - INFO - Extracted rating: 1515
+2025-06-12 18:33:06,446 - services - INFO - Game type 2 rating text: '1646'
+2025-06-12 18:33:06,446 - services - INFO - Extracted rating: 1646
+2025-06-12 18:33:06,446 - services - INFO - Game type 3 rating text: '1623'
+2025-06-12 18:33:06,446 - services - INFO - Extracted rating: 1623
+2025-06-12 18:33:06,449 - main - INFO - Found FIDE rapid rating 1646 for player Ragib Shahriar

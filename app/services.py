@@ -34,7 +34,7 @@ class ChessService:
                         raise Exception(f"HTTP {response.status}")
         except Exception as e:
             logger.error(f"Error fetching Chess.com rating: {e}")
-            raise
+            raise Exception("Failed to fetch Chess.com rating")
 
     @staticmethod
     @async_retry(retries=3, delay=1, backoff=2, logger=logger)
@@ -57,9 +57,7 @@ class ChessService:
                         raise Exception(f"HTTP {response.status}")
         except Exception as e:
             logger.error(f"Error fetching Lichess rating: {e}")
-            raise
-
-    @staticmethod
+            raise Exception("Failed to fetch Lichess rating")    @staticmethod
     @async_retry(retries=3, delay=1, backoff=2, logger=logger)
     async def get_fide_rating(fide_id: int, timeout: int = 10) -> dict:
         """
@@ -180,37 +178,9 @@ class ChessService:
             raise
 
     @staticmethod
-    async def get_fide_highest_rating(fide_id: int) -> int:
-        """
-        Get the highest rating from FIDE (Standard, Rapid, or Blitz)
-        
-        Args:
-            fide_id: FIDE ID number
-            
-        Returns:
-            int: Highest rating, or None if failed
-        """
-        try:
-            player_data = await ChessService.get_fide_rating(fide_id)
-            if not player_data:
-                return None
-            
-            ratings = [
-                player_data.get('standard_rating', 0) or 0,
-                player_data.get('rapid_rating', 0) or 0,
-                player_data.get('blitz_rating', 0) or 0
-            ]
-            
-            max_rating = max(ratings)
-            return max_rating if max_rating > 0 else None
-        except Exception as e:
-            logger.error(f"Error getting highest FIDE rating: {e}")
-            return None
-
-    @staticmethod
     async def get_all_ratings(chess_com_username: str = None, 
-                            lichess_username: str = None, 
-                            fide_id: int = None) -> dict:
+                          lichess_username: str = None, 
+                          fide_id: int = None) -> dict:
         """
         Get ratings from all platforms for a player
         
@@ -250,14 +220,14 @@ class ChessService:
                 if not isinstance(result, Exception) and result is not None:
                     results[platform] = result
                     
-            # Update highest overall rapid rating
+                    # Update highest overall rapid rating
                     if platform == 'fide':
                         if result and result.get('rapid_rating'):
                             rapid_rating = result['rapid_rating']
-                            results['highest_overall'] = max(results['highest_overall'], rapid_rating)
+                            results['highest_overall'] = max(results.get('highest_overall', 0), rapid_rating)
                     else:
-                        if result and result > results['highest_overall']:
-                            results['highest_overall'] = result
+                        if result:
+                            results['highest_overall'] = max(results.get('highest_overall', 0), result)
         
         return results
 
@@ -275,19 +245,15 @@ async def test_chess_service():
     logger.info(f"Lichess rating: {lichess_rating}")
     
     logger.info("\nTesting FIDE...")
-    fide_data = await ChessService.get_fide_rating(10297677)
+    fide_data = await ChessService.get_fide_rating(1503014)  # Magnus Carlsen's FIDE ID
     logger.info(f"FIDE data: {fide_data}")
-    
-    # Test getting highest FIDE rating
-    fide_highest = await ChessService.get_fide_highest_rating(10297677)
-    logger.info(f"FIDE highest rating: {fide_highest}")
     
     # Test getting all ratings for a player
     logger.info("\nTesting all ratings...")
     all_ratings = await ChessService.get_all_ratings(
         chess_com_username="hikaru",
         lichess_username="DrNykterstein", 
-        fide_id=10297677
+        fide_id=1503014
     )
     logger.info(f"All ratings: {all_ratings}")
 

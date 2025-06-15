@@ -1,0 +1,48 @@
+2025-06-14 09:56:04,462 - main - INFO - Refreshing FIDE rating for player Lokman Sharif
+2025-06-14 09:56:04,463 - services - INFO - Fetching data from: https://ratings.fide.com/profile/10297677
+2025-06-14 09:56:06,364 - services - INFO - Found 3 game type sections
+2025-06-14 09:56:06,364 - services - INFO - Game type 1 rating text: 'Not rated'
+2025-06-14 09:56:06,364 - services - WARNING - No numeric rating found in: Not rated
+2025-06-14 09:56:06,365 - services - INFO - Game type 2 rating text: '1560'
+2025-06-14 09:56:06,365 - services - INFO - Extracted rating: 1560
+2025-06-14 09:56:06,366 - services - INFO - Game type 3 rating text: 'Not rated'
+2025-06-14 09:56:06,366 - services - WARNING - No numeric rating found in: Not rated
+2025-06-14 09:56:06,367 - main - INFO - Refreshing Chess.com rating for player Lokman Sharif
+2025-06-14 09:56:07,963 - main - INFO - Refreshing Lichess rating for player Lokman Sharif
+2025-06-14 10:46:44,862 - main - ERROR - Error creating player: Textual SQL expression 'PRAGMA foreign_keys = OFF...' should be explicitly declared as text('PRAGMA foreign_keys = OFF...')
+2025-06-14 10:46:45,897 - main - ERROR - Error creating player: (sqlite3.IntegrityError) UNIQUE constraint failed: players.lichess_username
+[SQL: INSERT INTO players (id, name, fide_id, chesscom_username, lichess_username, fide_rating, chesscom_rating, lichess_rating, highest_rating, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id, created_at]
+[parameters: (2, 'Md Ahsanul Haque Emon', 10279083, 'TheEmonAhsanul', 'Edge007', None, 2029.0, 2087.0, 2087.0, None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-06-14 11:03:43,985 - main - ERROR - Error creating player: Textual SQL expression 'UPDATE players SET id = i...' should be explicitly declared as text('UPDATE players SET id = i...')
+2025-06-14 11:04:16,267 - main - ERROR - Error creating player: 
+2025-06-14 12:59:52,255 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=None, Chess.com=2029.0, Lichess=2087.0
+2025-06-14 12:59:52,256 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-14 12:59:52,256 - main - INFO - Player Akib Hassan ratings: FIDE=None, Chess.com=2020.0, Lichess=1520.0
+2025-06-14 13:03:00,553 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=None, Chess.com=2029.0, Lichess=2087.0
+2025-06-14 13:03:00,553 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-14 13:03:00,553 - main - INFO - Player Akib Hassan ratings: FIDE=None, Chess.com=2020.0, Lichess=1520.0
+2025-06-14 13:03:51,661 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=None, Chess.com=2029.0, Lichess=2087.0
+2025-06-14 13:03:51,661 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-14 13:03:51,661 - main - INFO - Player Akib Hassan ratings: FIDE=None, Chess.com=2020.0, Lichess=1520.0
+2025-06-14 13:04:07,114 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=None, Chess.com=2029.0, Lichess=2087.0
+2025-06-14 13:04:07,114 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-14 13:04:07,114 - main - INFO - Player Akib Hassan ratings: FIDE=None, Chess.com=2020.0, Lichess=1520.0
+2025-06-14 13:04:09,490 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=None, Chess.com=2029.0, Lichess=2087.0
+2025-06-14 13:04:09,491 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-14 13:04:09,491 - main - INFO - Player Akib Hassan ratings: FIDE=None, Chess.com=2020.0, Lichess=1520.0
+2025-06-14 13:04:10,923 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=None, Chess.com=2029.0, Lichess=2087.0
+2025-06-14 13:04:10,923 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-14 13:04:10,923 - main - INFO - Player Akib Hassan ratings: FIDE=None, Chess.com=2020.0, Lichess=1520.0
+2025-06-14 13:04:13,840 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=None, Chess.com=2029.0, Lichess=2087.0
+2025-06-14 13:04:13,841 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-14 13:04:13,841 - main - INFO - Player Akib Hassan ratings: FIDE=None, Chess.com=2020.0, Lichess=1520.0
+2025-06-14 13:04:51,442 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=None, Chess.com=2029.0, Lichess=2087.0
+2025-06-14 13:04:51,442 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-14 13:04:51,442 - main - INFO - Player Akib Hassan ratings: FIDE=None, Chess.com=2020.0, Lichess=1520.0
+2025-06-14 13:22:48,822 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=None, Chess.com=2029.0, Lichess=2087.0
+2025-06-14 13:22:48,822 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-14 13:22:48,823 - main - INFO - Player Akib Hassan ratings: FIDE=None, Chess.com=2020.0, Lichess=1520.0
+2025-06-14 13:32:17,054 - main - INFO - Player Md Ahsanul Haque Emon ratings: FIDE=None, Chess.com=2029.0, Lichess=2087.0
+2025-06-14 13:32:17,054 - main - INFO - Player Lokman Sharif ratings: FIDE=1560.0, Chess.com=567.0, Lichess=1359.0
+2025-06-14 13:32:17,054 - main - INFO - Player Akib Hassan ratings: FIDE=None, Chess.com=2020.0, Lichess=1520.0
